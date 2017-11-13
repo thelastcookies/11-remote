@@ -1,0 +1,14 @@
+﻿html,body{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline; overflow:hidden;height:100%;
+}
+body { font-family:Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;}
+
+.pt-page{
+    position:absolute;height:100%;width:100%;top:0px;left:0px;
+    -webkit-transition: 1s linear;
+  -moz-transition-property: all;
+  -moz-transition-duration: 1s;
+  -o-transition-property: all;
+  -o-transition-duration: 1s;
+  transition-property: all;
+  transition-duration: 1s;
+}

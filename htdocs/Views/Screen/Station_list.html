@@ -1,0 +1,68 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>逆变器一览图</title>
+    <link href="../../Content/Screen_11/css/Station_list.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <script src="../../Content/jquery/js/jquery.rotate.min.js"></script>
+    <script src="../../Content/jquery/js/jquery.easing.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //LoadList("WX1#ST");
+            //setTimeout("LoadList()", 1000 * 300);
+        });
+
+        function LoadList(sid) {
+            loaddata(sid);
+            window.setInterval(function () {
+            loaddata(sid);
+            }, 60000);
+        }
+
+        function loaddata(sid)
+        {
+            $.post("http://58.215.8.162:8081/Api/Screen/GetInverterList", { stationId: sid }, function (data) {
+                var htmlString = "";
+                for (var i = 0; i < data.data.length; i++) {
+                    htmlString += "<div id =\"nbq_" + i + "\" class=\"nbq_frame\" onmouseover=\"nbqHover('" + i + "', 'in')\" onmouseout=\"nbqHover('" + i + "', 'out')\" onclick=\"NextPage('" + data.data[i].id + "','" + data.data[i].name + "')\"> ";
+                    htmlString += "<div id =\"nbq_" + i + "_f\" class=\"nbq_flash\"></div>";
+                    htmlString += "<div id =\"nbq_" + i + "_bg\" class=\"nbq_bg\"></div>";
+                    htmlString += "<div class=\"nbq_title\">" + data.data[i].name + "</div>";
+                    htmlString += "<div class=\"nbq_dl\">功率：<span id =\"gl_0\"> " + data.data[i].power.toFixed(2) + " </span> kW </div>";
+                    htmlString += "<div class=\"nbq_gl\">电量：<span id =\"dl_0\"> " + data.data[i].dl.toFixed(2) + " </span> kWh </div>";
+                    htmlString += "</div>";
+                }
+                $("#dv_inverter").html(htmlString);
+            }, 'json');
+        }
+
+        function NextPage(id,name) {
+            window.parent.SwitchIframe("Inverter.html?sid=" + escape(id) + "&name=" + escape(name));
+            //window.location.href = "../../Screen_11/Inverter?sid=")"+id;
+        }
+
+        function nbqHover(id, status) {
+            if (status == "in") {
+                $("#nbq_" + id + "_bg").css("background-image", "url(../../Content/Screen_11/img/Station/Station_list_bg_hover.png)");
+                $("#nbq_" + id + "_f").show();
+            }
+            else {
+                $("#nbq_" + id + "_bg").css("background-image", "url(../../Content/Screen_11/img/Station/Station_list_bg.png)");
+                $("#nbq_" + id + "_f").hide();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="list_frame">
+            <div id="list_content">
+                <div id="dv_inverter"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

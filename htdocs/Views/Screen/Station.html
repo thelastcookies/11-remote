@@ -1,0 +1,442 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>电站首页</title>
+    <link href="../../Content/Screen_11/css/Station.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <script src="../../Content/jquery/js/jquery.rotate.min.js"></script>
+    <script src="../../Content/jquery/js/jquery.easing.min.js"></script>
+    <script>
+        var timer; var sid; var ShengId;
+        function InitStationPage(_sid) {
+
+            sid = _sid;
+            if (sid == "1") {
+                $("#ifrm2").attr("src", "Station_map_by.html");
+                $("#dv_station").text("巴音光伏电站");
+                $("#dv_position").text("乌兰察布市卓资县");
+                _sid = "BY";
+                ShengId = "nmg";
+                //ifrm3.window.LoadList(1);
+            }
+            else if (sid == "2") {
+                $("#ifrm2").attr("src", "Station_map_99Q.html");
+                $("#dv_station").text("九十九泉光伏电站");
+                $("#dv_position").text("乌兰察布市卓资县");
+                _sid = "99Q";
+                ShengId = "nmg";
+            }
+            else if (sid == "3") {
+                $("#ifrm2").attr("src", "Station_map_HM.html");
+                $("#dv_station").text("红牧光伏电站");
+                $("#dv_position").text("乌兰察布市察哈尔右翼后旗");
+                _sid = "HM";
+                ShengId = "nmg";
+            }
+            else if (sid == "4") {
+                $("#ifrm2").attr("src", "Station_map_SL.html");
+                $("#dv_station").text("胜利光伏电站");
+                $("#dv_position").text("锡林浩特市");
+                _sid = "SL";
+                ShengId = "nmg";
+            }
+            else if (sid == "5") {
+                $("#ifrm2").attr("src", "Station_map_eed.html");
+                $("#dv_station").text("乌拉特光伏电站");
+                $("#dv_position").text("巴彦淖尔市乌拉特前旗");
+                _sid = "WLT";
+                ShengId = "nmg";
+            }
+            else if (sid == "6") {
+                $("#ifrm2").attr("src", "Station_map_BLG.html");
+		        $("#dv_station").text("巴拉贡光伏电站");
+		        $("#dv_position").text("鄂尔多斯市杭锦旗");
+		        _sid = "BLG";
+		        ShengId = "nmg";
+            }
+            else if (sid == "7") {
+                $("#ifrm2").attr("src", "Station_map_RB.html");
+                $("#dv_station").text("润博光伏电站");
+                $("#dv_position").text("鄂尔多斯市鄂托克前旗");
+                _sid = "RB";
+                ShengId = "nmg";
+            }
+            else if (sid == "8") {
+                $("#ifrm2").attr("src", "Station_map_by.html");
+                $("#dv_station").text("北汽先进分布式电站");
+                $("#dv_position").text("北京市顺义区");
+                _sid = "BQ";
+                ShengId = "bj";
+            }
+            //else if (sid == "9") {
+                //$("#ifrm2").attr("src", "Station_map_by.html");
+                //$("#dv_station").text("巩义扶贫光伏电站");
+                //$("#dv_position").text("河南省巩义市");
+                //_sid = "GY";
+                //ShengId = "hn";
+            //}
+
+            else if (sid == "10") {
+                $("#ifrm2").attr("src", "Station_map_by.html");
+                $("#dv_station").text("中美象山先进技术示范电站");
+                $("#dv_position").text("浙江省象山县");
+                _sid = "XS";
+                ShengId = "zj";
+            }
+
+            else if (sid == "11") {
+                $("#ifrm2").attr("src", "Station_map_by.html");
+                $("#dv_station").text("孔府电站");
+                $("#dv_position").text("山东省济宁市");
+                _sid = "KF";
+                ShengId = "sd";
+            }
+
+            else if (sid == "12") {
+                $("#ifrm2").attr("src", "Station_map_by.html");
+                $("#dv_station").text("天津中际分布式电站");
+                $("#dv_position").text("天津市滨海新区");
+                _sid = "ZJ";
+                ShengId = "tj";
+            }
+
+            else if (sid == "13") {
+                $("#ifrm2").attr("src", "Station_map_by.html");
+                $("#dv_station").text("大拉分布式电站");
+                $("#dv_position").text("海南省澄迈县");
+                _sid = "DL";
+                ShengId = "hain";
+            }
+
+            ShowIframe(1);
+            //$("#ifrm2").hide();
+            //$("#ifrm3").hide();
+            //$("#ifrm1").show();
+            //$("#ifrm4").hide();
+            $("#menu_1").bind("click", Station_Page);
+            $("#menu_2").bind("click", Component);
+            $("#menu_3").bind("click", Inverter_List);
+
+
+            //$("#menu_1,#menu_2,#menu_3").rotate(-90);
+            $("#station_content").animate({ right: 0 }, {
+                duration: 500, easing: '', complete: function () {
+                    //alert("1");
+                    ifrm1.window.firstLoad(_sid);
+                    setTimeout(function () { ifrm3.window.LoadList(_sid); }, 2000);
+
+                }
+            }, 1000);
+
+            $("#title").animate({ top: 0 }, {
+                duration: 500, easing: '', complete: function () {
+						$("#btn_report").animate({ width: 142 }, 300);
+                        $("#station_title").animate({ top: 185, left: -80 }, {
+                            duration: 500, easing: '', complete: function () {
+                                $("#menu_1").animate({ left: -100, top: 426 }, {
+                                    duration: 500, easing: '', complete: function () {
+                                        $("#menu_2").animate({ left: -40, top: 592 }, {
+                                            duration: 500, easing: '', complete: function () {
+                                                $("#menu_3").animate({ left: -40, top: 717}, {
+                                                    duration: 500, easing: '', complete: function () {
+                                                        //alert("aa");
+                                                        $("#back").fadeIn(500);
+                                                        $("#back_d").fadeIn(500);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                }
+            });
+        }
+
+        $(function () {
+            $("#ifrm3").attr("src", "Station_list.html");
+            //$("#ifrm2").attr("src","../../Screen/Station_map_WX1_ST")");
+            $("#ifrm1").attr("src", "Station_default.html");
+
+            //InitStationPage("WX1#ST");//正式发布时注释掉
+        });
+
+
+        function GetParameter(param) {
+            var query = window.location.search;
+            var iLen = param.length;
+            var iStart = query.indexOf(param);
+            if (iStart == -1)
+                return "";
+            iStart += iLen + 1;
+            var iEnd = query.indexOf("&", iStart);
+            if (iEnd == -1)
+                return query.substring(iStart);
+            return query.substring(iStart, iEnd);
+        }
+        var num1 = 1;
+        var num2 = 0;
+        var num3 = 0;
+        function Station_Page()
+        {
+            if (num1 == 1)
+            {
+                return;
+            }
+            else
+            {
+                num1 = 1;
+                num2 = 0;
+                num3 = 0;
+            }
+            $("#menu_1").attr("class", "menu_click");
+            $("#menu_2").attr("class", "menu");
+            $("#menu_3").attr("class", "menu");
+
+            $("#menu_1").animate({ top: 426, left: -100 }, 500);
+            $("#menu_2").animate({ top: 592, left: -40 }, 500);
+            $("#menu_3").animate({ top: 717, left: -40 }, 500);
+
+
+            var windowWidth = $("#station_content").width();
+
+            $("#station_content").animate({ right: -windowWidth }, {
+                duration: 1000, easing: '', complete: function () {
+                    //$("#ifrm2").hide();
+                    //$("#ifrm3").hide();
+                    //$("#ifrm1").show();
+                    //$("#ifrm4").hide();
+                    ShowIframe(1);
+                }
+            });
+            $("#station_content").animate({ right: 0 }, 1000);
+
+            //$("#ifrm1").attr('src', "Station_default");
+        }
+
+        function Component()
+        {
+            if (num2 == 1) {
+                return;
+            }
+            else {
+                num1 = 0;
+                num2 = 1;
+                num3 = 0;
+            }
+            $("#menu_2").attr("class", "menu_click");
+            $("#menu_1").attr("class", "menu");
+            $("#menu_3").attr("class", "menu");
+
+            $("#menu_1").animate({ top: 426, left: -40 }, 500);
+            $("#menu_2").animate({ top: 526, left: -100 }, 500);
+            $("#menu_3").animate({ top: 696, left: -40 }, 500);
+
+            var windowWidth = $("#station_content").width();
+            $("#station_content").animate({ right: -windowWidth }, {
+                duration: 1000, easing: '', complete: function () {
+                    //$("#ifrm1").hide();
+                    //$("#ifrm3").hide();
+                    $("#ifrm2").show();
+                    //$("#ifrm4").hide();
+                    ShowIframe(2);
+                }
+            });
+
+            $("#station_content").animate({ right: 0 }, 1000);
+            //$("#ifrm1").attr('src', "Group");
+
+        }
+
+        function Inverter_List() {
+            if (num3 == 1) {
+                return;
+            }
+            else {
+                num1 = 0;
+                num2 = 0;
+                num3 = 1;
+            }
+            //$("#menu_3").unbind("click", Inverter_List);
+            //$("#menu_1").bind("click", Station_Page);
+            //$("#menu_2").bind("click", Component);
+
+            $("#menu_3").attr("class", "menu_click");
+            $("#menu_1").attr("class", "menu");
+            $("#menu_2").attr("class", "menu");
+
+            $("#menu_1").animate({ top: 426, left: -40 }, 500);
+            $("#menu_2").animate({ top: 550, left: -40 }, 500);
+            $("#menu_3").animate({ top: 650, left: -100 }, 500);
+
+            var windowWidth = $("#station_content").width();
+            $("#station_content").animate({ right: -windowWidth }, {
+                duration: 1000, easing: '', complete: function () {
+                    //$("#ifrm1").hide();
+                    //$("#ifrm2").hide();
+                    $("#ifrm3").show();
+                    //$("#ifrm4").hide();
+                    ShowIframe(3);
+                }
+            });
+
+            $("#station_content").animate({ right: 0 }, 1000);
+
+        }
+
+        function GoBack() {
+
+            $("#station_content").animate({ right: -1530 }, 300);
+            $("#title").animate({ top: -126 }, {
+                duration: 200, easing: '', complete: function () {
+                    {
+						$("#btn_report").animate({ width: 0 }, 300);
+                        $("#station_title").animate({ top: -1000, left: 92 }, {
+                            duration: 200, easing: '', complete: function () {
+                                $("#menu_1").animate({ left: -2000, top: 426 }, {
+                                    duration: 200, easing: '', complete: function () {
+                                        $("#menu_2").animate({ left: -2000, top: 592 }, {
+                                            duration: 200, easing: '', complete: function () {
+                                                $("#menu_3").animate({ left: -2000, top: 717 }, {
+                                                    duration: 200, easing: '', complete: function () {
+                                                        $("#back").fadeOut(200);
+                                                        $("#back_d").fadeOut(200);
+                                                        window.parent.Page3to2();
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+
+
+        function GoBackDefault() {//返回上一级
+
+            $("#station_content").animate({ right: -1530 }, 300);
+            $("#title").animate({ top: -126 }, {
+                duration: 200, easing: '', complete: function () {
+                    {
+                        $("#btn_report").animate({ width: 0 }, 300);
+                        $("#station_title").animate({ top: -1000, left: 92 }, {
+                            duration: 200, easing: '', complete: function () {
+                                $("#menu_1").animate({ left: -2000, top: 426 }, {
+                                    duration: 200, easing: '', complete: function () {
+                                        $("#menu_2").animate({ left: -2000, top: 592 }, {
+                                            duration: 200, easing: '', complete: function () {
+                                                $("#menu_3").animate({ left: -2000, top: 717 }, {
+                                                    duration: 200, easing: '', complete: function () {
+                                                        $("#back").fadeOut(200);
+                                                        $("#back_d").fadeOut(200);
+                                                        window.parent.Page3to2default(ShengId);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+
+        function GoBackPage() {
+            if($("#menu_2").attr("class") == "menu_click")
+            {
+                $("#ifrm1").css('z-index', '1');
+                $("#ifrm2").css('z-index', '9999');
+                $("#ifrm3").css('z-index', '2');
+                $("#ifrm4").css('z-index', '3');
+                $("#ifrm2").css({ 'opacity': '1' });
+                $("#ifrm2").fadeIn(2000);
+                $("#ifrm1").css({ 'opacity': '0' });
+                $("#ifrm3").css({ 'opacity': '0' });
+                $("#ifrm4").css({ 'opacity': '0' });
+            }
+            else
+            {
+                $("#ifrm1").css('z-index', '1');
+                $("#ifrm2").css('z-index', '2');
+                $("#ifrm3").css('z-index', '9999');
+                $("#ifrm4").css('z-index', '3');
+                $("#ifrm3").css({ 'opacity': '1' });
+                $("#ifrm3").fadeIn(2000);
+
+                $("#ifrm2").css({ 'opacity': '0' });
+                $("#ifrm1").css({ 'opacity': '0' });
+                $("#ifrm4").css({ 'opacity': '0' });
+            }
+        }
+
+        function SwitchIframe(url)
+        {
+            $("#ifrm4").attr("src", url);
+            $("#ifrm4").css('z-index', '9999');
+            $("#ifrm1").css({ 'opacity': '0' });
+            $("#ifrm1").css('z-index', '1');
+            $("#ifrm2").css('z-index', '2');
+            $("#ifrm3").css('z-index', '3');
+		//$("#ifrm4").css({ 'opacity': '1' });
+		$("#ifrm4").animate({ opacity: 1 }, 1000);
+                $("#ifrm4").fadeIn(1000);
+                $("#ifrm2").animate({ opacity: 'hide' }, 1000);
+                $("#ifrm3").animate({ opacity: 'hide' }, 1000);
+
+        }
+
+        function ShowIframe(id) {
+            for (var i = 1; i < 5; i++) {
+                if (i == id) {
+                    $("#ifrm" + i).css('z-index', '9999');
+                    $("#ifrm" + i).css({ 'opacity': '1' });
+                    //$("#ifrm" + i).css("visibility", "visible");
+                }
+                else {
+                    $("#ifrm" + i).css('z-index', id);
+                    $("#ifrm" + i).css({ 'opacity': '0' });
+                    //$("#ifrm" + i).css("visibility", "hidden");
+                }
+            }
+        }
+        function showReport() {
+            window.parent.showReoprt();
+        }
+    </script>
+</head>
+<body style="overflow:hidden;">
+    <div class="container" id="div_station">
+        <div id="title" style="top:-126px;"></div>
+        <div id="btn_report" style="width:0px;" onclick="showReport()"></div>
+        <div id="station_title">
+            <div class="station_name"><span id="dv_station"></span></div>
+            <div class="station_postion"><span id="dv_position"></span></div>
+        </div>
+        <div id="menu_1" class="menu_click" style="top:426px;left:-700px;">电站首页</div>
+        <div id="menu_2" class="menu" style="top:592px;left: -700px">组件分布图</div>
+        <div id="menu_3" class="menu" style="top:717px;left: -700px">逆变器一览图</div>
+        <div id="back" style="display:none" onclick="GoBack()">集团首页</div>
+        <div id="back_d" onclick="GoBackDefault()" style="display:none">返回上一级</div>
+        <div id="station_content">
+            <div class="station_iframe">
+                <iframe name="ifrm4" id="ifrm4" width="100%" height="100%" frameborder="no" border="0" src="" allowtransparency="true" style="position:absolute;"></iframe>
+                <iframe name="ifrm1" id="ifrm1" width="100%" height="100%" frameborder="no" border="0" src="" allowtransparency="true" style="position:absolute;"></iframe>
+                <iframe name="ifrm2" id="ifrm2" width="100%" height="100%" frameborder="no" border="0" src="" allowtransparency="true" style="position:absolute;"></iframe>
+                <iframe name="ifrm3" id="ifrm3" width="100%" height="100%" frameborder="no" border="0" src="" allowtransparency="true" style="position:absolute;"></iframe>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

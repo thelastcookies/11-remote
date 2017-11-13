@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>电站首页</title>
+    <link href="../../Content/Screen_11/css/Station_default.css?version=1.0.0" rel="stylesheet" type="text/css" />
+    <script src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <script src="../../Content/jquery/js/jquery.rotate.min.js"></script>
+    <script src="../../Content/jquery/js/jquery.easing.min.js"></script>
+    <script src="../../Content/HighChart/highcharts.js" type="text/javascript"></script>
+    <script>
+        $(function () {
+            //firstLoad("WLT");
+        });
+
+        function firstLoad(sid) {
+            loaddata(sid);
+            window.setInterval(function () {
+                loaddata(sid);
+            }, 600000);
+
+            $("#a1").animate({ left: '-100px' }, 1500, function () {
+                $("#center_chart,#chart_line").animate({ height: '316px' }, 1500, function () {
+                    $("#info_1").animate({ left: '-80px', width: '231px' }, 1500);
+                    $("#info_2").animate({ left: '80px', width: '231px' }, 1500);
+                    $("#info_3").animate({ left: '220px', width: '231px' }, 1500);
+                    $("#info_4").animate({ right: '100px', width: '231px' }, 1500);
+                    $("#info_5").animate({ right: '252px', width: '231px' }, 1500);
+                    $("#info_6").animate({ right: '405px', width: '231px' }, 1500);
+                    //showPowerLineChart();
+                });
+                $(".chart_title").animate({ height: '220px' }, 1500);
+            });
+
+            $("#a2").animate({ left: '250px' }, 1500);
+            $("#a3").animate({ left: '600px' }, 1500);
+            $("#a4").animate({ left: '950px' }, 1500);
+            $("#a5").animate({ left: '2324px' }, 1500);
+        }
+
+        function showPowerLineChart(data) {
+            var date = new Date();
+            var curYear = date.getFullYear(), curMonth = date.getMonth(), curDay = date.getDate();
+            $("#chart_line").highcharts({
+                chart: {
+                    zoomType: 'x',
+                    height: 336,
+                    width:480,
+                    style: {
+                        fontFamily: "'Unica One', sans-serif"
+                    },
+                    backgroundColor: 'rgba(0,0,0,0)'
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    type: 'datetime',
+                    minRange: 24 * 60 * 1000,// fourteen days
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color: '#a5ffff'
+                        }
+                    },
+                    dateTimeLabelFormats: { // don't display the dummy year
+                        //month: '%m',
+                        year: '%b',
+                        day: '%m-%e',
+                        hour: '%H:%M'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color: '#a5ffff'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.x:%H:%M} {point.y:.2f} MW'
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                            stops: [
+                                [0, '#01A9E0'],
+                                [1, 'rgba(1,169,224,0.1)']
+                            ]
+                        },
+                        marker: {
+                            radius: 2
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+                series: [{
+                    type: 'area',
+                    name: '功率',
+                    pointInterval: 5 * 60 * 1000,
+                    //pointInterval: 24 * 3600 * 1000,
+                    pointStart: Date.UTC(curYear, curMonth, curDay),//改成年月日","隔开
+                    data: data
+                }]
+            });
+        }
+
+        function loaddata(sid) {
+            $.post("http://58.215.8.162:8081/Api/Screen/GetStationInfo", { stationId: sid }, function (data) {
+                var _power = data.power.toFixed(2).split('.');
+                if (_power[0] > 999) {
+                    var s_power = (_power[0] / 1000).toFixed(2).split('.');
+                    //_power[0] = (_power[0] / 1000).toFixed(2).split('.');
+                    $("#ssfh_1").html(s_power[0]);
+                    $("#ssfh_2").html("." + s_power[1]);
+                    $("#gl_dw").html("MW");
+                }
+                else {
+                    $("#ssfh_1").html(_power[0]);
+                    $("#ssfh_2").html("." + _power[1]);
+                    $("#gl_dw").html("kW");
+                }
+                var _daydl = data.dayDL.toFixed(2);
+                if (_daydl > 9999) {
+                    _daydl = (_daydl / 10000).toFixed(2).split('.');
+                    $("#daydl_dw").html("万kWh");
+                } else {
+                    _daydl = (_daydl / 1).toFixed(2).split('.');
+                    $("#daydl_dw").html("kWh");
+                }
+                $("#daydl_1").html(_daydl[0]);
+                $("#daydl_2").html("." + _daydl[1]);
+
+                var _monthdl = data.monthDL.toFixed(2);
+                if (_monthdl > 9999) {
+                    _monthdl = (_monthdl / 10000).toFixed(2).split('.');
+                    $("#monthdl_dw").html("万kWh");
+                } else {
+                    _monthdl = (_monthdl / 1).toFixed(2).split('.');
+                    $("#monthdl_dw").html("kWh");
+                }
+                $("#monthdl_1").html(_monthdl[0]);
+                $("#monthdl_2").html("." + _monthdl[1]);
+
+                var _yeardl = data.yearDL.toFixed(2);
+                if (_yeardl > 9999) {
+                    _yeardl = (_yeardl / 10000).toFixed(2).split('.');
+                    $("#yeardl_dw").html("万kWh");
+                } else {
+                    _yeardl = (_yeardl / 1).toFixed(2).split('.');
+                    $("#yeardl_dw").html("kWh");
+                }
+                $("#yeardl_1").html(_yeardl[0]);
+                $("#yeardl_2").html("." + _yeardl[1]);
+
+                var _totaldl = data.yearDL.toFixed(2);
+                if (_totaldl > 9999) {
+                    _totaldl = (_totaldl / 10000).toFixed(2).split('.');
+                    $("#totaldl_dw").html("万kWh");
+                } else {
+                    _totaldl = (_totaldl / 1).toFixed(2).split('.');
+                    $("#totaldl_dw").html("kWh");
+                }
+                $("#totaldl_1").html(_totaldl[0]);
+                $("#totaldl_2").html("." + _totaldl[1]);
+
+                var _rl = data.rl.toFixed(2);
+                if (_rl > 1000) {
+                    _rl = (_rl / 1000).toFixed(2);
+                    $("#zjrl").html(_rl);
+                    $("#rl_dw").html("MW");
+
+                } else {
+                    $("#zjrl").html(_rl);
+                    $("#rl_dw").html("kW");
+                }
+
+
+                $("#nbqts").html(data.count);
+                $("#ts_dw").html("台");
+                $("#fzd").html(parseInt(data.fzd.toFixed(2)));
+                $("#fzd_dw").html("W/㎡");
+
+                if (Number(data.eyht) > 10000) {
+                    $("#so2").html((Number(data.eyht) / 10000).toFixed(2));
+                    $("#sp_so2").html("万吨");
+                }
+                else {
+                    $("#so2").html(Number(data.eyht).toFixed(0));
+                    $("#sp_so2").html("吨");
+                }
+                if (Number(data.jm) > 10000) {
+                    $("#jbm").html((Number(data.jm) / 10000).toFixed(2));
+                    $("#sp_jbm").html("万吨");
+                }
+                else {
+                    $("#jbm").html(Number(data.jm).toFixed(0));
+                    $("#sp_jbm").html("吨");
+                }
+
+                if (Number(data.kf) > 10000) {
+                    $("#slkf").html((Number(data.kf) / 10000).toFixed(2));
+                    $("#sp_slkf").html("万亩");
+                }
+                else {
+                    $("#slkf").html(Number(data.kf).toFixed(0));
+                    $("#sp_slkf").html("亩");
+                }
+                //$("#so2").html((Number(data.eyht) / 1000).toFixed(2));
+                //$("#jbm").html((Number(data.jm) / 1000).toFixed(2));
+                //$("#slkf").html(data.kf != "" ? data.kf.toFixed(2) : "");
+
+                var line = data.line;
+
+
+                for (var i = 0; i < line.length; i++) {
+                    line[i] = Number((line[i] / 1000).toFixed(2));
+                }
+
+
+                showPowerLineChart(line);
+                setLocation();
+            }, 'json');
+            //setLocation();
+        }
+
+        function setLocation() {
+            for (var i = 0; i < 6; i++) {
+                var _w = $('#c_value_' + i).width();
+                $('#c_value_' + i).css("margin-right", (476 - _w) / 2);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="top">
+            <div id="a1" class="top_frame" style="left:2200px;">
+                <div class="top_frame_2">
+                    <div class="c4"></div>
+                    <div class="c2"></div>
+                    <div class="c3"></div>
+                    <div class="cb">
+                        <div class="c_title">功率</div>
+                        <div style="width:100%;height:112px;">
+                            <div class="c_value" id="c_value_1">
+                                <div id="ssfh_1" class="c_value_1"></div>
+                                <div id="ssfh_2" class="c_value_2"></div>
+                            </div>
+                        </div>
+
+                        <div id="gl_dw" class="c_unit"></div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div id="a2" class="top_frame" style="left:2200px;">
+                <div class="top_frame_2">
+                    <div class="c4"></div>
+                    <div class="c2"></div>
+                    <div class="c3"></div>
+                    <div class="cb">
+                        <div class="c_title">日发电量</div>
+                        <div style="width:100%;height:112px;">
+                            <div class="c_value" id="c_value_2">
+                                <div id="daydl_1" class="c_value_1"></div>
+                                <div id="daydl_2" class="c_value_2"></div>
+                            </div>
+                        </div>
+
+                        <div id="daydl_dw" class="c_unit"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="a3" class="top_frame" style="left:2200px;">
+                <div class="top_frame_2">
+                    <div class="c4"></div>
+                    <div class="c2"></div>
+                    <div class="c3"></div>
+                    <div class="cb">
+                        <div class="c_title">月发电量</div>
+                        <div style="width:100%;height:112px;">
+                            <div class="c_value" id="c_value_3">
+                                <div id="monthdl_1" class="c_value_1"></div>
+                                <div id="monthdl_2" class="c_value_2"></div>
+                            </div>
+                        </div>
+
+                        <div id="monthdl_dw" class="c_unit"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="a4" class="top_frame" style="left:2200px;">
+                <div class="top_frame_2">
+                    <div class="c4"></div>
+                    <div class="c2"></div>
+                    <div class="c3"></div>
+                    <div class="cb">
+                        <div class="c_title">年发电量</div>
+                        <div style="width:100%;height:112px;">
+                            <div class="c_value" id="c_value_4">
+                                <div id="yeardl_1" class="c_value_1"></div>
+                                <div id="yeardl_2" class="c_value_2"></div>
+                            </div>
+                        </div>
+
+                        <div id="yeardl_dw" class="c_unit"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="a5" class="top_frame" style="left:2200px;">
+                <div class="top_frame_2">
+                    <div class="c4"></div>
+                    <div class="c2"></div>
+                    <div class="c3"></div>
+                    <div class="cb">
+                        <div class="c_title" style="width:196px;">累计发电量</div>
+                        <div style="width:100%;height:112px;">
+                            <div class="c_value" id="c_value_5">
+                                <div id="totaldl_1" class="c_value_1"></div>
+                                <div id="totaldl_2" class="c_value_2"></div>
+                            </div>
+                        </div>
+
+                        <div id="totaldl_dw" class="c_unit"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div id="center_chart" style="height:0px">
+
+                <div class="chart_title" style="overflow:hidden;height:0px"><div class="chart_title_dv">功率曲线</div></div>
+            </div>
+            <div id="chart_line" style="width:480px"></div>
+            <div id="info_1" class="info_l" style="left:370px;">
+                <div class="info_title">装机容量</div>
+                <div class="info_bottom">
+                    <div class="info_value"><span id="zjrl"></span></div>
+                    <div class="info_unit"><span id="rl_dw"></span></div>
+                </div>
+            </div>
+            <div id="info_2" class="info_l" style="left:370px;">
+                <div class="info_title">逆变器台数</div>
+                <div class="info_bottom">
+                    <div class="info_value"><span id="nbqts"></span></div>
+                    <div class="info_unit"><span id="ts_dw"></span></div>
+                </div>
+            </div>
+            <div id="info_3" class="info_l" style="left:370px;">
+                <div class="info_title">辐照度</div>
+                <div class="info_bottom">
+                    <div class="info_value"><span id="fzd"></span></div>
+                    <div class="info_unit"><span id="fzd_dw"></span></div>
+                </div>
+            </div>
+            <div id="info_4" class="info_r" style="right:590px;">
+                <div class="info_frame_r">
+                    <div class="info_title">减少森林砍伐</div>
+                    <div class="info_bottom">
+                        <div class="info_value_2"><span id="slkf"></span></div>
+                        <div class="info_unit"><span id="sp_slkf"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div id="info_5" class="info_r" style="right:590px;">
+                <div class="info_frame_r">
+                    <div class="info_title">节约标准煤</div>
+                    <div class="info_bottom">
+                        <div class="info_value_2"><span id="jbm"></span></div>
+                        <div class="info_unit"><span id="sp_jbm"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div id="info_6" class="info_r" style="right:590px;">
+                <div class="info_frame_r">
+                    <div class="info_title">减排二氧化碳</div>
+                    <div class="info_bottom">
+                        <div class="info_value_2"><span id="so2"></span></div>
+                        <div class="info_unit"><span id="sp_so2"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

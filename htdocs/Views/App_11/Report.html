@@ -1,0 +1,162 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>电量报表</title>
+    <link href="../../Content/App_11/css/Report.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../Content/App_11/datePicker/css/datePicker.css">
+    <script type="text/javascript" src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../Content/App_11/datePicker/js/require/iscroll.js"></script>
+    <script type="text/javascript" src="../../Content/App_11/datePicker/js/datePicker.js"></script>
+    <script type="text/javascript">
+        var dDate;
+        var reg = /^[-+]?\d+(.\d+)?$/;
+        $(function () {
+            dDate = new Date();
+            dDate.setTime(dDate.getTime() - 24 * 60 * 60 * 1000);
+            var dMonth = dDate.getMonth() + 1;
+            var dDay = dDate.getDate();
+
+            dMonth = ("00" + dMonth).substring(dMonth.toString().length);
+            dDay = ("00" + dDay).substring(dDay.toString().length);
+            var day_Date = dDate.getFullYear() + "-" + dMonth + "-" + dDay;
+            var month_Date = dDate.getFullYear() + "-" + dMonth;
+            var year_Date = dDate.getFullYear();
+
+            $("#day_input").val(day_Date);
+            $("#month_input").val(month_Date);
+            $("#year_input").val(year_Date);
+
+            initTable("day");//正式发布时注释
+
+            $('#day_input').datePicker({
+                beginyear: 2005,
+                theme: 'date',
+                onchange: function () { initTable("day");}
+            })
+            //$('#day_input').change(function () {
+            //    initTable("day");
+            //});
+            $('#month_input').datePicker({
+                theme: 'month',
+                onchange: function () { initTable("month"); }
+
+            });
+            $('#year_input').datePicker({
+                theme: 'year',
+                onchange: function () { initTable("year"); }
+            });
+        });
+
+        function initTable(_tableType) {
+            console.log(_tableType);
+            var _htmlString = "";
+            $("#dv_table").empty();
+            $.get('../../File/dl.json', {}, function (data) {
+                var sData = eval(data);
+                var _Time;
+                var _arrHeji = new Array(0, 0, 0, 0, 0, 0, 0);
+                _htmlString += "<table width='100%' height='100%' border='0' cellpadding='0' cellspacing='0'>";
+                if (_tableType == "year" || _tableType == "month") {//年,月电量报表
+                    var _type = "年";
+                    _Time = $("#year_input").val();
+                    if (_tableType == "month") {
+                        _Time = $("#month_input").val();
+                        _type = "月";
+                    }
+                    _htmlString += "<tr><td colspan='2'  class='top'>" + _Time + _type + "发电量" + "</td></tr><tr><td class='top_l'>电站名称</td><td class='top_r'>发电量(MWh)</td></tr>";
+                    for (var i = 0; i < sData.length; i++) {
+                        _htmlString += "<tr><td class='l'>" + sData[i]["站名"] + "</td>";
+                        var keys = Object.keys(sData[0]);
+                        var totalElect = 0;
+                        for (var j = 0; j < keys.length; j++) {
+                            if (keys[j].indexOf(_Time) > -1) {
+
+                                var listData = sData[i][keys[j]];
+                                var dataArr = listData.split(",").map(function (item) {
+                                    return reg.test(item) ? parseFloat(item) : 0;
+                                });
+                                totalElect += dataArr.reduce(function (a, b) {
+                                    return a + b;
+                                }, 0);
+
+                            }
+                        }
+                        _htmlString += "<td  class='r'>" + totalElect.toFixed(2) + "</td></tr>";
+                    }
+                }
+                else if (_tableType == "day") {//月电量报表
+                    _Time = $("#day_input").val();
+                    var year_month = _Time.substring(0, _Time.lastIndexOf("-"));
+                    var now_day = _Time.substring(_Time.lastIndexOf("-") + 1);
+                    _htmlString += "<tr><td colspan='2'  class='top'>" + _Time + "日发电量" + "</td></tr><tr><td class='top_l'>电站名称</td><td class='top_r'>发电量(MWh)</td></tr>";
+                    for (var i = 0; i < sData.length; i++) {
+                        _htmlString += "<tr><td  class='l'>" + sData[i]["站名"] + "</td>";
+                        var keys = Object.keys(sData[0]);
+                        var dayElect = 0;
+                        for (var j = 0; j < keys.length; j++) {
+                            if (keys[j].indexOf(year_month) > -1) {
+                                var listData = sData[i][keys[j]];
+                                var arr = listData.split(",");
+                                dayElect = arr.length > (now_day - 1) ? arr[now_day - 1] : 0;
+                                break;
+                            }
+                        }
+                        _htmlString += "<td class='r'>" + dayElect + "</td></tr>";
+                    }
+                }
+                _htmlString += "</table>";
+                $("#dv_table").html(_htmlString);
+
+            }, "json");
+
+        }
+
+        function selectType(_type) {
+            $('#day_input').hide();
+            $('#month_input').hide();
+            $('#year_input').hide();
+            $('#btn_day').attr("class", "btn_time");
+            $('#btn_month').attr("class", "btn_time");
+            $('#btn_year').attr("class", "btn_time");
+
+            $('#' + _type + '_input').show();
+            $('#btn_' + _type).attr("class", "btn_time_active");
+            initTable(_type);
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div id="title_dl_day">电量报表</div>
+        <div class="time_type">
+            <div class="conten_1">
+                <div id="input_time">
+                    时间：
+                    <input id="day_input" readonly="readonly" type="text" class="Wdate" onchange="initTable('day');" />
+                    <input id="month_input" readonly="readonly" type="text" class="Wdate" style="display:none;"  onchange="initTable('month');" />
+                    <input id="year_input" readonly="readonly" type="text" class="Wdate" style="display:none;"  onchange="initTable('year');" />
+                </div>
+            </div>
+            <div class="conten_2">
+                <div id="btn_day" class="btn_time_active" onclick="selectType('day')">日</div>
+            </div>
+            <div class="conten_2">
+                <div id="btn_month" class="btn_time" onclick="selectType('month')">月</div>
+            </div>
+            <div class="conten_2">
+                <div id="btn_year" class="btn_time" onclick="selectType('year')">年</div>
+            </div>
+        </div>
+        <div class="table">
+            <div id="dv_table">
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

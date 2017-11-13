@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>组件分布图</title>
+    <link href="../../Content/Screen_11/css/Inverter.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <script src="../../Content/jquery/js/jquery.rotate.min.js"></script>
+    <script src="../../Content/jquery/js/jquery.easing.min.js"></script>
+    <script src="../../Content/Js/jquery.canimate.js"></script>
+    <script>
+        $(function () {
+            var sid = GetParameter('sid');
+            var name = GetParameter('name');
+            firstLoad(unescape(sid), unescape(name));
+            //firstLoad("WX1#ST:1:001AA00");
+        });
+
+        function firstLoad(sid, name) {
+            $.post("http://58.215.8.162:8081/Api/Screen/GetInverterInfo", { inverterId: sid }, function (data) {
+                var _columns = data.columns;
+                var _values = data.values;
+                for (var i = 0; i < 40; i++) {
+                    var a = "";
+                    var b = "";
+                    if (i < data.columns.length) {
+                        a = _columns[i];
+                        b = _values[i].toFixed(2);
+                    }
+
+                    var _html;
+                    if (i % 2 != 0)
+                        _html = "<div class=\"tr_js\"><div class=\"td_l\">" + a + "</div><div class=\"td_r\">" + b + "</div></div>";
+                    else
+                        _html = "<div class=\"tr_os\"><div class=\"td_l\">" + a + "</div><div class=\"td_r\">" + b + "</div></div>";
+
+                    if (i < 10) {
+                        $("#sb_1").append(_html);
+                    } else if (i < 20) {
+                        $("#sb_2").append(_html);
+                    } else if (i < 30) {
+                        $("#sb_3").append(_html);
+                    } else {
+                        $("#sb_4").append(_html);
+                    }
+                }
+            }, 'json');
+
+
+            $("#nbq_name_text").text(name);
+            $("#zj_movie").hide();
+            $("#zj_bg_1").animate({ width: '525px', height: '525px', top: '0px', left: '48px' }, 3500, function () {
+                $("#zj_movie").fadeIn(3000);
+                $('.canimation').canimate({
+                    totalFrames: 90,
+                    imagePrefix: 'solar',
+                    fps: 24,
+                    preload: true
+                });
+            });
+
+            $("#zj_bg_2").animate({ width: '525px', height: '525px', top: '0px', left: '48px' }, 3500);
+            $("#zj_bg_3").animate({ width: '525px', height: '525px', top: '0px', left: '48px' }, 3500);
+            $("#a1").animate({ left: '400px' }, 2500, function () {
+                $(".text_content>div").each(function (i, element) {
+                    progressAnim1($(element), i);
+                });
+            });
+            $("#a2").animate({ left: '735px' }, 2500);
+            $("#a3").animate({ left: '1070px' }, 2500);
+            //$("#a4").animate({ left: '1170px' }, 2500);
+
+        }
+
+        function GetParameter(param) {
+            var query = window.location.search;
+            var iLen = param.length;
+            var iStart = query.indexOf(param);
+            if (iStart == -1)
+                return "";
+            iStart += iLen + 1;
+            var iEnd = query.indexOf("&", iStart);
+            if (iEnd == -1)
+                return query.substring(iStart);
+            return query.substring(iStart, iEnd);
+        }
+
+        function progressAnim1(e, i) {
+            e.css({
+                'opacity': '1',
+                '-webkit-transform': 'none',
+                '-moz-transform': 'none',
+                '-ms-transform': 'none',
+                '-o-transform': 'none',
+                'transform': 'none'
+            });
+        }
+
+        function progressAnim(e, i) {
+            var speed = i;
+
+            var ang = 90;
+            var ang1 = 0;
+            setInterval(function () {
+                ang -= 10;
+                ang1 += (1 / 9);
+                if (ang > -1) {
+                    e.css({
+                        '-webkit-transform': 'rotateY(' + ang + 'deg)',
+                        '-moz-transform': 'rotateY(' + ang + 'deg)',
+                        '-ms-transform': 'rotateY(' + ang + 'deg)',
+                        '-o-transform': 'rotateY(' + ang + 'deg)',
+                        'transform': 'rotateY(' + ang + 'deg)',
+                        'opacity': '' + ang1 + ''
+                        //'transform': 'none'
+                    });
+                }
+            }, 100);
+        }
+
+        function NextPage()
+        {
+            window.parent.GoBackPage();
+        }
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="btn_back" onclick="NextPage()"></div>
+        <div id="zj">
+            <div id="zj_bg_3"></div>
+            <div id="zj_bg_2"></div>
+            <div id="zj_bg_1"></div>
+            <div id="zj_movie">
+                <div class="canimation">
+                    <img src="../../Content/Screen_11/img/Inverter/zj/solar0000.png")" width="622" height="466" />
+                </div>
+            </div>
+
+        </div>
+        <div id="nbq_name">
+            <div id="nbq_name_text"><span>S1详细信息</span></div>
+        </div>
+        <div id="a1" class="text_frame" style="left:1920px;">
+            <div id="sb_1" class="text_content">
+              
+            </div>
+            <div class="text_frame_bg_top"></div>
+            <div class="text_frame_bg_bottom"></div>
+        </div>
+        <div id="a2" class="text_frame" style="left:1920px;">
+            <div id="sb_2" class="text_content">
+
+
+            </div>
+            <div class="text_frame_bg_top"></div>
+            <div class="text_frame_bg_bottom"></div>
+        </div>
+        <div id="a3" class="text_frame" style="left:1920px;">
+            <div id="sb_3" class="text_content">
+
+            </div>
+            <div class="text_frame_bg_top"></div>
+            <div class="text_frame_bg_bottom"></div>
+        </div>
+        <div id="a4" class="text_frame" style="left:1920px;display:none;">
+            <div id="sb_4" class="text_content">
+
+
+            </div>
+            <div class="text_frame_bg_top"></div>
+            <div class="text_frame_bg_bottom"></div>
+        </div>
+    </div>
+</body>
+</html>

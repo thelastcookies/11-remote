@@ -1,0 +1,149 @@
+﻿html,body{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline; overflow-x:auto;height:924px; width:1530px;
+          /*background:transparent;overflow:hidden;*/
+}
+body { font-family:'Segoe UI', 'Hiragino Sans GB', 'Microsoft Yahei','微软雅黑',  Arial, sans-serif;}
+.container
+{
+    position:absolute;
+    top:0px;left:0px;
+		width:1530px;
+    height:924px;
+    background-image: url(../img/Station/Station_bg.png);
+filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+-moz-background-size:100% 100%;  
+    background-size:100% 100%;  
+}
+#overflow_frame{
+    position:absolute;
+    left:30px;top:60px;width:1480px; height:781px;overflow:hidden;
+}
+#map_frame_by{
+position: absolute;
+top:0px;left:0px;width:1470px; height:1500px;overflow:hidden;
+}
+#map_frame_eed{
+position: absolute;
+top:0px;left:0px;width:1470px; height:1500px;overflow:hidden;
+}
+#map_frame_hm{
+position: absolute;
+top:0px;left:0px;width:1480px; height:1200px;overflow:hidden;
+}
+#map_frame
+{
+position: absolute;
+top:-500px;left:100px;
+height: 1410px;
+width: 1410px;
+padding:14px;
+border: 0px solid black;
+-webkit-perspective:1410px; /* Safari and Chrome */
+         -moz-perspective: 1410px;
+           -o-perspective: 1410px;
+              perspective: 1410px;
+  -webkit-transition: top 1s,left 1s;
+  -moz-transition-property:top, left;
+  -moz-transition-duration: 1s, 1s, 1s, 1s;
+  -o-transition-property: top, left;
+  -o-transition-duration: 1s, 1s, 1s, 1s;
+  transition-property: top, left;
+  transition-duration: 1s, 1s, 1s, 1s;
+}
+
+#map
+{
+width:1460px;height:1460px;
+position: absolute;
+border: 0px solid black;
+-webkit-transform: rotateX(70deg); /* Safari and Chrome */
+         -moz-transform: rotateX(70deg);
+           -o-transform: rotateX(70deg);
+              transform: rotateX(70deg);
+
+-webkit-transition: -webkit-transform 1s,-moz-transform 1s,-o-transform 1s,transform 1s;
+  -moz-transition-property: -webkit-transform, -moz-transform, -o-transform, transform;
+  -moz-transition-duration: 1s, 1s, 1s, 1s;
+  -o-transition-property: -webkit-transform, -moz-transform, -o-transform, transform;
+  -o-transition-duration: 1s, 1s, 1s, 1s;
+  transition-property: -webkit-transform, -moz-transform, -o-transform, transform;
+  transition-duration: 1s, 1s, 1s, 1s;
+
+}
+
+#map_eed
+{
+width:1460px;height:1460px;
+position: absolute;
+border: 0px solid black;
+-webkit-transform: rotateX(70deg); /* Safari and Chrome */
+         -moz-transform: rotateX(70deg);
+           -o-transform: rotateX(70deg);
+              transform: rotateX(70deg);
+
+-webkit-transition: -webkit-transform 1s,-moz-transform 1s,-o-transform 1s,transform 1s;
+  -moz-transition-property: -webkit-transform, -moz-transform, -o-transform, transform;
+  -moz-transition-duration: 1s, 1s, 1s, 1s;
+  -o-transition-property: -webkit-transform, -moz-transform, -o-transform, transform;
+  -o-transition-duration: 1s, 1s, 1s, 1s;
+  transition-property: -webkit-transform, -moz-transform, -o-transform, transform;
+  transition-duration: 1s, 1s, 1s, 1s;
+
+}
+
+#divMouse,#divMouse_nbq{
+    position:absolute;width:94px;height:56px;display:none; font-size:22px;color:#00b4ff;
+}
+.divMouse_jiao_1{position:absolute;width:14px;height:14px;left:0px;top:0px;border-left:3px solid #55bffb;border-top:3px solid #55bffb;}
+.divMouse_jiao_2{position:absolute;width:14px;height:14px;right:0px;top:0px;border-right:3px solid #55bffb;border-top:3px solid #55bffb;}
+.divMouse_jiao_3{position:absolute;width:14px;height:14px;left:0px;bottom:0px;border-left:3px solid #55bffb;border-bottom:3px solid #55bffb;}
+.divMouse_jiao_4{position:absolute;width:14px;height:14px;right:0px;bottom:0px;border-right:3px solid #55bffb;border-bottom:3px solid #55bffb;}
+.divMouse_bg {position:absolute; left:1px; top:1px; width:90px;height:50px;border:1px solid #00aeff;
+              background-color:#122a43;
+              filter:alpha(opacity=90);  
+      -moz-opacity:0.9;  
+      -khtml-opacity: 0.9;  
+      opacity: 0.9; 
+      -moz-box-shadow:0px 0px 12px #00b4ff inset;              
+    -webkit-box-shadow:0px 0px 12px #00b4ff inset;           
+    box-shadow:0px 0px 12px #00b4ff inset; 
+}
+.divMouse_bg_text {position:absolute; left:-22px; top:1px; width:137px;height:53px;line-height:50px;text-align:center;
+-moz-transform:scaleX(0.67);       
+    -webkit-transform:scaleX(0.67);   
+    transform:scaleX(0.67);
+}
+.icon_nbq {
+    position:absolute;width:20px;height:40px;background-image:url(../img/Station/Station_map_nbq.gif);cursor:pointer;
+filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+-moz-background-size:100% 100%;  
+    background-size:100% 100%; 
+}
+.icon_nbq:hover {
+    background-image:url(../img/Station/Station_map_nbq_hover.gif);
+}
+
+::-webkit-scrollbar {  
+  width: 20px;  
+  height: 20px;  
+}  
+  
+::-webkit-scrollbar-track,  
+::-webkit-scrollbar-thumb {  
+  border-radius: 1399px;  
+  border: 5px solid transparent;  
+}  
+  
+::-webkit-scrollbar-track {  
+  box-shadow: 1px 1px 5px rgba(0,0,0,.5) inset;  
+}  
+  
+::-webkit-scrollbar-thumb {  
+  min-height: 28px;  
+  background-clip: content-box; 
+background-color: rgba(255, 255, 255, 0.5);  
+  box-shadow: 0 0 0 5px rgba(0,0,0,.2) inset;  
+}  
+  
+::-webkit-scrollbar-corner {  
+  background-color:#071c36;  
+}

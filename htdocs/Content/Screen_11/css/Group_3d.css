@@ -1,0 +1,14 @@
+﻿html,body{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline; overflow-x:auto;height:1080px; width:3840px;
+}
+body { font-family:'Segoe UI', 'Hiragino Sans GB', 'Microsoft Yahei','微软雅黑',  Arial, sans-serif;}
+.container
+{
+    position:relative;
+	width:100%;
+    height:100%;
+    background-image: url(../img/Group/test_3d.jpg);
+filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+-moz-background-size:100% 100%;  
+    background-size:100% 100%; 
+    overflow:hidden; 
+}

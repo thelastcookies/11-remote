@@ -1,0 +1,138 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>十一科技光伏运维平台</title>
+    <link href="../../Content/Screen_11/css/PageMove.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <script src="../../Content/jquery/js/jquery.rotate.min.js"></script>
+    <script src="../../Content/jquery/js/jquery.easing.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#page2").hide();
+            $("#page3").hide();
+            $("#ifrm4").attr("src", "../../Views/Screen/Report.html");
+            //$("#ifrm2").attr("src", "@Url.Content("~/Screen/Group")");
+            $("#ifrm1").attr("src", "../../Views/Screen/Login.html");
+        });
+
+        function Page1to2(uid) {
+
+            $("#ifrm2").attr("src", "../../Views/Screen/Group.html");
+            $("#page2").show();
+
+            $("#page1").animate({ opacity: 'hide' }, {
+                duration: 1000, easing: '', complete: function () {
+                    $("#page1").hide();
+                    $("#ifrm1").attr("src", "");
+                    $("#ifrm3").attr("src","../../Views/Screen/Station.html");
+                    $("#ifrm2")[0].contentWindow.initGroupPage();
+                }
+
+            });
+        }
+        function Page2to3(stationId) {
+            $("#page3").show();
+
+            $("#page2").animate({ opacity: 'hide' }, {
+                duration: 500, easing: '', complete: function () {
+                    $("#page2").hide();
+                    $("#ifrm2").attr("src","../../Views/Screen/Group.html");
+                    $("#ifrm3")[0].contentWindow.InitStationPage(stationId);
+                    //setTimeout(function () { ifrm3.window.InitStationPage(stationId); }, 0);
+
+                }
+            });
+        }
+        function Page3to2() {
+            //$("#ifrm2").attr("src","@Url.Content("~/Screen/Group")");
+            $("#page2").show();
+
+            $("#page3").animate({ opacity: 'hide' }, {
+                duration: 1500, easing: '', complete: function () {
+                    $("#page3").hide();
+                    $("#ifrm3").attr("src", "../../Views/Screen/Station.html");
+                    $("#ifrm2")[0].contentWindow.initGroupPage();
+                }
+
+            });
+        }
+
+        function Page3to2default(_ShengId) {
+            $("#page2").show();
+
+            $("#page3").animate({ opacity: 'hide' }, {
+                duration: 1500, easing: '', complete: function () {
+                    $("#page3").hide();
+                    $("#ifrm3").attr("src", "../../Views/Screen/Station.html");
+                    $("#ifrm2")[0].contentWindow.loadSheng(_ShengId);
+                }
+
+            });
+        }
+
+
+        function showReoprt() {
+            $("#page4").show();
+            $("#page4").animate({ opacity: 'show', top: 0 }, {
+                duration: 1000, easing: '', complete: function () {
+                    $("#ifrm4")[0].contentWindow.initTable("day");
+                }
+
+            });
+            $("#page4").css({ 'top': '0px' });
+        }
+        function hideReoprt() {
+            //$("#page4").animate({ opacity: 'hide', top: 1920 }, {
+            //    duration: 1000, easing: '', complete: function () {
+            //        $("#page4").hide();
+            //        $("#page4").css({ 'top': '1100px' });
+            //    }
+
+            //});
+            $("#page4").css({ 'top': '1100px' });
+        }
+
+
+		//function showReoprt(){
+		//	//$("#page4").show();
+		//	//$("#page4").animate({ opacity: 'show',top:0 }, {
+        //    //    duration: 1000, easing: '', complete: function () {
+        //    //        $("#ifrm4")[0].contentWindow.initTable("day");
+        //    //    }
+
+		//	//});
+		//    $("#page4").css({'top':'0px'});
+		//}
+		//function hideReoprt() {
+		//	//$("#page4").animate({ opacity: 'hide', top: 1080 }, {
+		//	//    duration: 1000, easing: '', complete: function () {
+		//	//        $("#page4").hide();
+		//	//    }
+
+		//    //});
+		//    $("#page4").css({ 'top': '1100px'});
+		//}
+
+    </script>
+</head>
+<body>
+    <div id="pt-main" class="pt-perspective">
+        <div id="page4" class="pt-page" style="top:1100px; z-index:9999;">
+            <iframe name="ifrm4" id="ifrm4" width="100%" height="100%" frameborder="no" border="0" src="" allowtransparency="true"></iframe>
+        </div>
+        <div id="page3" class="pt-page">
+            <iframe name="ifrm3" id="ifrm3" width="100%" height="100%" frameborder="no" border="0" src="" allowtransparency="true"></iframe>
+        </div>
+        <div id="page2" class="pt-page">
+            <iframe name="ifrm2" id="ifrm2" width="100%" height="100%" frameborder="no" border="0" src="" allowtransparency="true"></iframe>
+        </div>
+        <div id="page1" class="pt-page">
+            <iframe name="ifrm1" id="ifrm1" width="100%" height="100%" frameborder="no" border="0" src="" allowtransparency="true"></iframe>
+        </div>
+    </div>
+</body>
+</html>

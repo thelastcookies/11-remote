@@ -1,0 +1,580 @@
+﻿
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>组件分布图</title>
+    <link href="../../Content/Screen_11/css/Station_map.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <script src="../../Content/jquery/js/jquery.rotate.min.js"></script>
+    <script src="../../Content/jquery/js/jquery.easing.min.js"></script>
+    <script>
+        var status_transform = "1";//0表示没有变形，1表示处在变形状态
+        $(function () {
+            var transform = function (element, value, key) {
+                key = key || "Transform";
+                ["Moz", "O", "Ms", "Webkit", ""].forEach(function (prefix) {
+                    element.style[prefix + key] = value;
+                });
+
+                return element;
+            },
+            fwidth = function (element) {
+
+                    element.style["width"] = 700 + "px";
+                return element;
+            }
+            // 浏览器选择器API
+                , $ = function (selector) {
+                    return document.querySelector(selector);
+                }, $$ = function (selector) {
+                    return document.querySelectorAll(selector);
+                };
+            var rotate = 0;
+            var eleContainer = $("#btn"), indexPiece = 0, ele = $('#map'),
+                overflowframe = $('#overflow_frame'), mapframeby = $('#map_frame'),
+                btn_transform = $('#btn_transform'), overflow_frame = $('#overflow_frame');
+            // 元素
+            eleContainer.addEventListener("click", function () {
+                status_transform = "0";
+                this.style["display"] = "none";
+                overflowframe.style["overflow-y"] = "auto";
+                overflowframe.style["overflow-x"] = "auto";
+                mapframeby.style["top"] = "0px";
+                mapframeby.style["left"] = "0px";
+
+                transform(ele, "rotateX(" + (-1 * rotate * ++indexPiece) + "deg)");
+
+            });
+            btn_transform.addEventListener("click", function () {
+                if (status_transform == "1") {
+                    status_transform = "0";
+                    rotate = 0;
+                    overflowframe.style["overflow-y"] = "auto";
+                    //overflowframe.style["overflow-x"] = "auto";//尽量注释
+                    mapframeby.style["top"] = "0px";
+                    mapframeby.style["left"] = "100px";
+                    transform(ele, "rotateX(" + rotate + "deg)");
+                } else if (status_transform == "0") {
+                    status_transform = "1";
+                    rotate = 70;
+                    overflow_frame.scrollTop = 0;
+                    overflowframe.style["overflow-y"] = "hidden";
+                    mapframeby.style["top"] = "-400px";
+                    mapframeby.style["left"] = "30px";
+                    transform(ele, "rotateX(" + rotate + "deg)");
+                }
+
+                //fwidth(ele);
+            });
+
+        });
+
+        function transformMap(beer) {
+            if (status_transform == "0") {
+
+            }
+        }
+
+        function gotoInverter(beer)
+        {
+            var zc_name = $(beer).attr("id");
+
+            window.parent.SwitchIframe("Inverter.html?sid=" + zc_name);
+            //window.location.href = "@Url.Content("~/Screen/Inverter?sid=")" + zc_name;
+        }
+        function tooltip(dongzuo, beer) {//机组棒子附近显示负荷和负荷率
+            var zc_status="0";
+            var zc_name = $(beer).attr("id");
+            if (dongzuo == "show") {
+                $("#divMouse").show();
+                console.log(beer);
+                $(beer).mousemove(function (e) {
+                    $("#mouselocation").text(zc_name);
+                    $("#divMouse").css({
+                        "top": parseInt(e.pageY - 63) + "px",
+                        "left":parseInt(e.pageX - 50) + "px"
+                    });
+                    if (zc_status == "0") {
+                        $(beer).css("stroke", "rgb(46,75,151)");
+                    }
+                    else if (zc_status == "1") {
+                        $(beer).css("stroke", "rgb(255,238,43)");
+                    }
+                    else if (zc_status == "2") {
+                        $(beer).css("stroke", "rgb(255,100,100)");
+                    }
+
+                });
+            }
+            else {
+                $("#divMouse").hide();
+                if (zc_status == "0") {
+                    $(beer).css("stroke", "rgb(15,37,96)");
+                }
+                else if (zc_status == "1") {
+                    $(beer).css("stroke", "rgb(244,224,0)");
+                }
+                else if (zc_status == "2") {
+                    $(beer).css("stroke", "rgb(220,0,0)");
+                }
+            }
+        }
+
+        function tooltipNbq(dongzuo, beer) {//机组棒子附近显示负荷和负荷率
+            var zc_status = "0";
+            var zc_name = $(beer).attr("id");
+            if (dongzuo == "show") {
+                $("#divMouse").show();
+                console.log(beer);
+                $(beer).mousemove(function (e) {
+                    $("#mouselocation").text(zc_name);
+                    $("#divMouse").css({
+                        "top": parseInt(e.pageY - 63) + "px",
+                        "left": parseInt(e.pageX - 50) + "px"
+                    });
+                    //$(beer).css("stroke", "rgb(46,75,151)");
+
+                });
+            }
+            else {
+                $("#divMouse").hide();
+                //$(beer).css("stroke", "rgb(46,75,151)");
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <div class="container">
+
+        <div id="overflow_frame">
+            <div id="map_frame_hm">
+                <div id="map_frame" style="left:30px;top:-400px;">
+                    <div id="map">
+                        <img src="../../Content/Screen_11/img/Station/blg.png" width="1200" height="1200" />
+
+                        <svg id="SVG1" width="100%" height="100%" version="1.1" style="position:absolute;top:0px;left:0px;"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <rect id="btn_transform" x="0" y="0" width="1200" height="1167"
+                                  style="fill:rgb(0,0,0);stroke-width:0;stroke:rgb(0,0,0); fill-opacity:0;stop-opacity:0;cursor:pointer;" />
+                            <!--id前面的表示逆变器编号，_第一个是总的元素数，_第二个是该元素的序号-->
+                            <!-- S1 -->
+                            <line id="S1_1" x1="30" y1="90" x2="230" y2="90" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_2" x1="30" y1="110" x2="230" y2="110" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_3" x1="30" y1="130" x2="230" y2="130" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_4" x1="30" y1="150" x2="230" y2="150" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_5" x1="30" y1="170" x2="230" y2="170" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_6" x1="30" y1="190" x2="230" y2="190" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S1_7" x1="30" y1="210" x2="190" y2="210" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_8" x1="30" y1="230" x2="190" y2="230" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_9" x1="30" y1="250" x2="190" y2="250" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S1_10" x1="30" y1="270" x2="230" y2="270" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_11" x1="30" y1="290" x2="230" y2="290" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_12" x1="30" y1="310" x2="230" y2="310" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_13" x1="30" y1="330" x2="230" y2="330" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_14" x1="30" y1="350" x2="230" y2="350" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_15" x1="30" y1="370" x2="230" y2="370" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_16" x1="30" y1="390" x2="230" y2="390" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_17" x1="30" y1="410" x2="230" y2="410" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S1_18" x1="30" y1="430" x2="190" y2="430" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_19" x1="30" y1="450" x2="190" y2="450" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_20" x1="30" y1="470" x2="190" y2="470" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_21" x1="30" y1="490" x2="190" y2="490" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_22" x1="30" y1="510" x2="190" y2="510" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S1_23" x1="30" y1="530" x2="230" y2="530" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_24" x1="30" y1="550" x2="230" y2="550" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_25" x1="30" y1="570" x2="230" y2="570" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_26" x1="30" y1="590" x2="230" y2="590" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_27" x1="30" y1="610" x2="230" y2="610" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_28" x1="30" y1="630" x2="230" y2="630" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_29" x1="30" y1="650" x2="230" y2="650" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S1_30" x1="30" y1="670" x2="190" y2="670" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_31" x1="30" y1="690" x2="190" y2="690" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_32" x1="30" y1="710" x2="190" y2="710" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_33" x1="30" y1="730" x2="190" y2="730" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_34" x1="30" y1="750" x2="190" y2="750" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S1_35" x1="30" y1="770" x2="230" y2="770" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_36" x1="30" y1="790" x2="230" y2="790" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_37" x1="30" y1="810" x2="230" y2="810" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_38" x1="30" y1="830" x2="230" y2="830" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_39" x1="30" y1="850" x2="230" y2="850" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_40" x1="30" y1="870" x2="230" y2="870" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_41" x1="30" y1="890" x2="230" y2="890" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S1_42" x1="30" y1="910" x2="190" y2="910" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_43" x1="30" y1="930" x2="190" y2="930" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_44" x1="30" y1="950" x2="190" y2="950" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_45" x1="30" y1="970" x2="190" y2="970" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_46" x1="30" y1="990" x2="190" y2="990" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S1_47" x1="30" y1="1010" x2="230" y2="1010" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_48" x1="30" y1="1030" x2="230" y2="1030" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_49" x1="30" y1="1050" x2="230" y2="1050" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S1_50" x1="30" y1="1070" x2="230" y2="1070" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+
+                            <line id="S2_1" x1="250" y1="150" x2="290" y2="150" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_2" x1="250" y1="170" x2="290" y2="170" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_3" x1="250" y1="190" x2="290" y2="190" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_4" x1="250" y1="210" x2="290" y2="210" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_5" x1="250" y1="230" x2="290" y2="230" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+
+                            <line id="S2_6" x1="410" y1="150" x2="610" y2="150" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_7" x1="410" y1="170" x2="610" y2="170" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_8" x1="410" y1="190" x2="610" y2="190" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_9" x1="410" y1="210" x2="570" y2="210" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_10" x1="410" y1="230" x2="570" y2="230" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S2_11" x1="250" y1="250" x2="570" y2="250" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S2_12" x1="250" y1="270" x2="610" y2="270" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_13" x1="250" y1="290" x2="610" y2="290" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_14" x1="250" y1="310" x2="610" y2="310" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_15" x1="250" y1="330" x2="610" y2="330" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_16" x1="250" y1="350" x2="610" y2="350" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_17" x1="250" y1="370" x2="610" y2="370" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_18" x1="250" y1="390" x2="610" y2="390" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_19" x1="250" y1="410" x2="610" y2="410" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S2_20" x1="250" y1="430" x2="570" y2="430" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_21" x1="250" y1="450" x2="570" y2="450" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_22" x1="250" y1="470" x2="570" y2="470" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_23" x1="250" y1="490" x2="570" y2="490" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_24" x1="250" y1="510" x2="570" y2="510" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S2_25" x1="250" y1="530" x2="610" y2="530" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_26" x1="250" y1="550" x2="610" y2="550" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_27" x1="250" y1="570" x2="610" y2="570" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_28" x1="250" y1="590" x2="610" y2="590" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_29" x1="250" y1="610" x2="610" y2="610" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_30" x1="250" y1="630" x2="610" y2="630" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_31" x1="250" y1="650" x2="610" y2="650" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S2_32" x1="250" y1="670" x2="570" y2="670" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_33" x1="250" y1="690" x2="570" y2="690" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_34" x1="250" y1="710" x2="570" y2="710" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_35" x1="250" y1="730" x2="570" y2="730" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_36" x1="250" y1="750" x2="570" y2="750" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S2_37" x1="250" y1="770" x2="610" y2="770" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_38" x1="250" y1="790" x2="610" y2="790" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_39" x1="250" y1="810" x2="610" y2="810" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_40" x1="250" y1="830" x2="610" y2="830" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_41" x1="250" y1="850" x2="610" y2="850" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_42" x1="250" y1="870" x2="610" y2="870" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_43" x1="250" y1="890" x2="610" y2="890" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S2_44" x1="250" y1="910" x2="570" y2="910" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_45" x1="250" y1="930" x2="570" y2="930" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_46" x1="250" y1="950" x2="570" y2="950" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_47" x1="250" y1="970" x2="570" y2="970" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_48" x1="250" y1="990" x2="570" y2="990" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S2_49" x1="250" y1="1010" x2="610" y2="1010" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_50" x1="250" y1="1030" x2="610" y2="1030" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_51" x1="250" y1="1050" x2="610" y2="1050" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S2_52" x1="250" y1="1070" x2="610" y2="1070" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+
+                            <line id="S3_1" x1="650" y1="170" x2="730" y2="170" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_2" x1="650" y1="190" x2="730" y2="190" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_3" x1="650" y1="210" x2="770" y2="210" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_4" x1="650" y1="230" x2="810" y2="230" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_5" x1="650" y1="250" x2="850" y2="250" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_6" x1="650" y1="270" x2="850" y2="270" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S3_7" x1="650" y1="290" x2="890" y2="290" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_8" x1="650" y1="310" x2="890" y2="310" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_9" x1="650" y1="330" x2="890" y2="330" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S3_10" x1="650" y1="350" x2="930" y2="350" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S3_11" x1="650" y1="370" x2="970" y2="370" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_12" x1="650" y1="390" x2="970" y2="390" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_13" x1="650" y1="410" x2="970" y2="410" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_14" x1="650" y1="430" x2="970" y2="430" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_15" x1="650" y1="450" x2="970" y2="450" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_16" x1="650" y1="470" x2="970" y2="470" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_17" x1="650" y1="490" x2="970" y2="490" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_18" x1="650" y1="510" x2="970" y2="510" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_19" x1="650" y1="530" x2="970" y2="530" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_20" x1="650" y1="550" x2="970" y2="550" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_21" x1="650" y1="570" x2="970" y2="570" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_22" x1="650" y1="590" x2="970" y2="590" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_23" x1="650" y1="610" x2="970" y2="610" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S3_24" x1="650" y1="630" x2="930" y2="630" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_25" x1="650" y1="650" x2="930" y2="650" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_26" x1="650" y1="670" x2="930" y2="670" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_27" x1="650" y1="690" x2="930" y2="690" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_28" x1="650" y1="710" x2="930" y2="710" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S3_29" x1="650" y1="730" x2="970" y2="730" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_30" x1="650" y1="750" x2="970" y2="750" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_31" x1="650" y1="770" x2="970" y2="770" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_32" x1="650" y1="790" x2="970" y2="790" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_33" x1="650" y1="810" x2="970" y2="810" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_34" x1="650" y1="830" x2="970" y2="830" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_35" x1="650" y1="850" x2="970" y2="850" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_36" x1="650" y1="870" x2="970" y2="870" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_37" x1="650" y1="890" x2="970" y2="890" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S3_38" x1="650" y1="910" x2="930" y2="910" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_39" x1="650" y1="930" x2="930" y2="930" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_40" x1="650" y1="950" x2="930" y2="950" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_41" x1="650" y1="970" x2="930" y2="970" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_42" x1="650" y1="990" x2="930" y2="990" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S3_43" x1="650" y1="1010" x2="970" y2="1010" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_44" x1="650" y1="1030" x2="970" y2="1030" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_45" x1="650" y1="1050" x2="970" y2="1050" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S3_46" x1="650" y1="1070" x2="970" y2="1070" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S4_1" x1="1000" y1="670" x2="1160" y2="670" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_2" x1="1000" y1="690" x2="1160" y2="690" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_3" x1="1000" y1="710" x2="1160" y2="710" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S4_4" x1="1000" y1="730" x2="1160" y2="730" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_5" x1="1000" y1="750" x2="1160" y2="750" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_6" x1="1000" y1="770" x2="1160" y2="770" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_7" x1="1000" y1="790" x2="1160" y2="790" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_8" x1="1000" y1="810" x2="1160" y2="810" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_9" x1="1000" y1="830" x2="1160" y2="830" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_10" x1="1000" y1="850" x2="1160" y2="850" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_11" x1="1000" y1="870" x2="1160" y2="870" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_12" x1="1000" y1="890" x2="1160" y2="890" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S4_13" x1="1000" y1="910" x2="1160" y2="910" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_14" x1="1000" y1="930" x2="1160" y2="930" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default"
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_15" x1="1000" y1="950" x2="1160" y2="950" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_16" x1="1000" y1="970" x2="1160" y2="970" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_17" x1="1000" y1="990" x2="1160" y2="990" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+                            <line id="S4_18" x1="1000" y1="1010" x2="1160" y2="1010" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_19" x1="1000" y1="1030" x2="1160" y2="1030" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_20" x1="1000" y1="1050" x2="1160" y2="1050" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+                            <line id="S4_21" x1="1000" y1="1070" x2="1160" y2="1070" onmouseover="tooltip('show', this)" onmouseout="tooltip('hide', this)" cursor="default" *@
+                                  style="stroke:rgb(15,37,96);stroke-width:10;" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </svg>
+                        @*<div id="S1" class="icon_nbq" style="left:116px;top:465px;" onmouseover="tooltipNbq('show', this)" onmouseout="tooltipNbq('hide', this)" onclick="gotoInverter(this)"></div>*@
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="btn" style="position:absolute;top:0px;left:0px;width:3px;height:3px;cursor:pointer;"></div>
+        <div id="divMouse">
+            <div class="divMouse_bg"></div>
+            <div class="divMouse_jiao_1"></div>
+            <div class="divMouse_jiao_2"></div>
+            <div class="divMouse_jiao_3"></div>
+            <div class="divMouse_jiao_4"></div>
+            <div class="divMouse_bg_text"><span id="mouselocation"></span>  </div>
+        </div>
+    </div>
+</body>
+</html>

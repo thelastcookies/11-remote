@@ -1,0 +1,131 @@
+﻿/*1080p*/
+html,body{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline; overflow-x:auto;height:100%; width:100%;
+}
+body { font-family:Helvetica;}
+.container
+{
+    position:relative;
+	width:100%;
+    height:100%;
+    overflow:hidden; 
+	background-color:#000;
+	margin:0px auto;
+}
+#kjz,#light_show,#login_bg_top,#login_bg_bottom,#ico_un,#ico_psd,#text_jieshao{
+    position:absolute;
+filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+-moz-background-size:100% 100%;  
+    background-size:100% 100%; 
+}
+#bg_login {
+    position:absolute;top:0px;left:0px;width:100%;height:100%;
+    background-image:url(../img/Login/bg_login.png);
+    background-size:auto 100%;
+}
+#bg_earth{position:absolute;width:100%;height:100%;left:0px;top:0px;}
+#login_content{
+    position:absolute;width:833px;height:575px;left:0px;top:129px;
+}
+#login_bg_top{
+    width:833px;height:192px;left:0px;top:185px;background-image:url(../img/Login/Login_frame_bg_top.png);
+}
+#login_bg_bottom{
+    width:833px;height:192px;left:0px;bottom:185px;background-image:url(../img/Login/Login_frame_bg_bottom.png);
+}
+#login_text{
+    position:absolute;width:692px;height:78px;left:70px;top:245px;border:1px solid #0280ed;overflow:hidden;
+    -moz-box-shadow:0px 0px 42px #001650 inset;              
+    -webkit-box-shadow:0px 0px 42px #001650 inset;           
+    box-shadow:0px 0px 42px #001650 inset; 
+}
+#login_text_bg{position:absolute;top:0px;left:0px;width:692px;height:454px;
+    background-color:#0b1a30;
+              filter:alpha(opacity=50);  
+      -moz-opacity:0.5;  
+      -khtml-opacity: 0.5;  
+      opacity: 0.5; 
+}
+#login_text_content {position:absolute;top:0px;left:0px;width:692px;height:454px;
+}
+#input_title{
+    position:absolute;
+    left:132px;top:0px;
+    width:437px;height:137px;
+    color:#31a9fc;
+    font-size:36px;
+    line-height:168px;
+    text-align:left;text-indent:0.5em;
+    display:none;
+}
+.input_username{
+    position:absolute;
+    
+    width:800px;height:100px;
+}
+.input_password{
+    position:absolute;
+    
+    width:800px;height:100px;
+}
+.style_input{
+    text-indent:0.5em;
+	border: 2px solid #0292f6;
+    border-radius: 10px; /* 所有角都使用半径为5px的圆角，此属性为CSS3标准属性 */ 
+-moz-border-radius: 10px; /* Mozilla浏览器的私有属性 */ 
+-webkit-border-radius: 10px; /* Webkit浏览器的私有属性 */
+background-color:#000;
+             font-size: 60px;
+             height: 100px;
+             line-height: 95px;
+             padding: 0;            
+             width: 800px;
+			 /*color:#6bc0ff;*/
+			 /*text-align:left;*/
+             -moz-box-shadow:0px 0px 30px #0291f6 inset;              
+    -webkit-box-shadow:0px 0px 30px #0291f6 inset;           
+    box-shadow:0px 0px 30px #0291f6 inset; 
+}
+input:focus {
+        border: 2px solid #00c5ff;
+		-webkit-box-shadow: 0px 0px 30px #00c5ff inset;
+		-moz-box-shadow: 0px 0px 30px #00c5ff inset;
+		box-shadow: 0px 0px 30px #00c5ff inset;
+		background-color:#000;
+	}
+#ico_un,#ico_psd{width:33px;height:41px;top:25px;right:24px;}
+#ico_un { background-image:url(../img/Login/Login_ico_user.png);}
+#ico_psd { background-image:url(../img/Login/Login_ico_password.png);}
+
+#login_button{
+    position:absolute;
+    width:804px;height:100px;
+    color:#57e1ff;
+    text-align:center;
+    background-color:#0493f8;
+    font-size:60px;
+    cursor:pointer;
+             line-height: 95px;
+     -webkit-box-shadow: 0px 0px 15px #050b17;
+		-moz-box-shadow: 0px 0px 15px #050b17;
+		box-shadow: 0px 0px 15px #050b17;
+        border-radius: 10px; /* 所有角都使用半径为5px的圆角，此属性为CSS3标准属性 */ 
+-moz-border-radius: 10px; /* Mozilla浏览器的私有属性 */ 
+-webkit-border-radius: 10px; /* Webkit浏览器的私有属性 */
+background:url(../img/Login/bg_button.png) no-repeat center center;
+}
+    #login_button:active {
+        background:url(../img/Login/bg_button_click.png) no-repeat center center;
+    }
+
+	#logo{
+	position:absolute;
+	width:323px;height:340px;
+	background:url(../img/Login/logo.png) no-repeat center center;
+	}
+	#title{
+	position:absolute;
+	width:auto;height:100px;line-height:100px;
+	font-size:80px;color:#fff;
+	text-shadow: 0px 0 20px #12314e, 0 0px 20px #12314e, 
+    0 0px 20px #12314e, 0px 0 20px #12314e;
+	}

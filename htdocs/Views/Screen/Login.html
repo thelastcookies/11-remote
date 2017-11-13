@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>登录页面</title>
+    <link href="../../Content/Screen_11/css/Login.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <script src="../../Content/jquery/js/jquery.rotate.min.js"></script>
+    <script src="../../Content/jquery/js/jquery.easing.min.js"></script>
+
+    <script>
+        $(function () {
+            // for test
+            // successLogin();
+
+            setTimeout("showLight()", 3000);
+            setTimeout("showLoginFrame()", 3300);
+        });
+        function showLight() {
+            $('#light_show').animate({ left: 1920 }, 2000);
+        }
+        function showLoginFrame() {
+            $('#login_frame').animate({ width: 1260 }, {
+                duration: 1000, easing: '', complete: function () {
+                    setTimeout("transformLoginFrame()", 650);
+                    setTimeout("moveformLoginFrame()", 2000);
+                }
+            });
+            //alert(windowWidth);
+        }
+        function transformLoginFrame() {
+            var transform = function (element, value, key) {
+                key = key || "Transform";
+                ["Moz", "O", "Ms", "Webkit", ""].forEach(function (prefix) {
+                    element.style[prefix + key] = value;
+                });
+
+                return element;
+            },
+            $ = function (selector) {
+                return document.querySelector(selector);
+            }, $$ = function (selector) {
+                return document.querySelectorAll(selector);
+            };
+            var ele = $('#map');
+            transform(ele, "rotateX(0deg)");
+        }
+        function moveformLoginFrame() {
+            $('#input_title').show();
+            $('#login_bg_top').animate({ top: 0 }, 1000);
+            $('#login_bg_bottom').animate({ bottom: 0 }, 1000);
+            $('#login_text').animate({ top: 60,height:454 }, 1000);
+        }
+        function inputUn(un) {
+            if (un == "on") {
+                $('#username').val('').css({ "color": "#fff", "text-align": "center", "text-indent": "0em" });
+                $('#ico_un').hide();
+            } else if (un == "out") {
+                $('#username').val('用户名').css({ "color": "#6bc0ff", "text-align": "left", "text-indent": "2em" });
+                $('#ico_un').show();
+            }
+            else if (un == "on1") {
+                $('#ico_psd').hide();
+                $('#password').val('').css({ "color": "#fff", "text-align": "center", "text-indent": "0em" }).attr('type', 'password');
+            }
+            else if (un == "out1") {
+                $('#ico_psd').show();
+                $('#password').val('密  码').css({ "color": "#6bc0ff", "text-align": "left", "text-indent": "2em" }).attr('type', 'text');
+            }
+        }
+        function Login() {
+            // successLogin();
+            if ($("#username").val() == "" || $("#password").val() == "" || $("#username").val() == "用户名" || $("#password").val() == "密  码") {
+                alert("请输入用户名或密码！");
+            }
+            else
+            {
+                $.post('http://58.215.8.162:8081/Api/Screen/CheckLogin', { name: $("#username").val(), pwd: $("#password").val() }, function (data) {
+
+                    if(data.judge =="1")
+                    {
+                        successLogin();
+                    }
+                    else
+                    {
+                        $("#password").val('');
+                        alert('用户不存在或密码错误!');
+
+                    }
+
+                }, 'json');
+
+            }
+
+        }
+        function successLogin() {
+            $('#login_text').animate({ height:78,top:245 }, 650);
+            $('#login_bg_top').animate({ top: 185 }, {
+                duration: 650, easing: '', complete: function () {  }
+            });
+            $('#login_bg_bottom').animate({ bottom: 185 }, {
+                duration: 650, easing: '', complete: function () {
+                    $('#login_frame').animate({ width: 0 }, 650);
+                    $('#input_title').hide();
+                }
+            });
+            $('#title').animate({  top: -126 }, 650);
+            $('#kjz').animate({ width: 210, height: 132, left: -664 }, {
+                duration: 1500, easing: 'easeOutQuad', complete: function () {
+                    window.parent.Page1to2();
+                }
+            });
+        }
+
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which;
+            if (code == 13) {
+                Login();
+
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <canvas id="html5_3d_animation">
+            Internet Explorer Not
+            Supported
+        </canvas>
+        <div id="show"></div>
+        <div id="title"></div>
+        <div id="kjz"></div>
+        <div id="text_jieshao">
+            2014年设计3GW，总包500MW；<br>2015年设计4.5GW，总包615MW；<br>2016年设计9GW，总包806MW。<br>连续三年持续增长，全国领先。
+        </div>
+        <div id="login_frame">
+            <div id="map_frame_by">
+                <div id="map_frame">
+                    <div id="map">
+                        <div id="login_content">
+                            <div id="login_bg_top"></div>
+                            <div id="login_bg_bottom"></div>
+                            <div id="login_text">
+                                <div id="login_text_bg"></div>
+
+                                <div id="login_text_content">
+                                    <div id="input_title">用户登录</div>
+                                    <div class="input_username">
+                                        <input type="text" name="username" id="username" class="style_input" tabindex="1" value="用户名" onfocus="if (value == '用户名') { inputUn('on'); }" onblur="if (value == '') { inputUn('out'); }" />
+                                        <div id="ico_un"></div>
+                                    </div>
+                                    <div class="input_password">
+                                        <input type="text" name="password" id="password" class="style_input" tabindex="2" value="密  码" onfocus="if (value == '密  码') { inputUn('on1'); }" onblur="if (value == '') { inputUn('out1'); }" />
+                                        <div id="ico_psd"></div>
+                                    </div>
+                                    <div id="login_button" data-animation="1" onclick="Login()">登  录</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="light_show"></div>
+
+    </div>
+</body>
+</html>

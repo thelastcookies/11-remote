@@ -1,0 +1,167 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <!--<meta name="viewport" content="width=device-width" />-->
+    <title>登录页面</title>
+    <link href="../../Content/App_11/css/Login.css?version=1.0.0" rel="stylesheet" type="text/css" />
+    <script src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <script src="../../Content/jquery/js/jquery.rotate.min.js"></script>
+    <script src="../../Content/jquery/js/jquery.easing.min.js"></script>
+    <style type="text/css">
+        ::-webkit-input-placeholder { /* WebKit browsers */
+            color: #6bc0ff;
+            text-align: left;
+        }
+
+        input {
+            color: #fff;
+            text-align: center;
+            text-indent: 0em;
+        }
+    </style>
+    <script>
+        var h, w;
+        $(function () {
+            setLocation();
+            showEarth();
+            //setTimeout("showEarth()", 2000);
+            setTimeout("showLogin()", 2000);
+            $("#password").focus(function () {
+                $('#ico_psd').hide();
+                //$(this).css({ "color": "#fff", "text-align": "center", "text-indent": "0em" });
+                this.placeholder = "";
+            }).blur(function () {
+                $('#ico_psd').show();
+                //$(this).css({ "color": "#6bc0ff", "text-align": "left", "text-indent": "0.5em" });
+                if (this.value == "") {
+                    this.placeholder = "密  码";
+                }
+            });
+
+            $("#username").focus(function () {
+                $('#ico_un').hide();
+                //$(this).css({ "color": "#fff", "text-align": "center", "text-indent": "0em" });
+                this.placeholder = "";
+            }).blur(function () {
+                $('#ico_un').show();
+                //$(this).css({ "color": "#6bc0ff", "text-align": "left", "text-indent": "0.5em" });
+                if (this.value == "") {
+                    this.placeholder = "用户名";
+                }
+            });
+        });
+        function showEarth() {
+            $('#bg_earth').animate({ "opacity": "1" }, 1000);
+        }
+        function setLocation() {
+            var w = $(window).width();
+            var h = $(window).height();
+            if ((h / w) > 1.778) {
+                $("#bg_login").css({ "background-size": "auto 100%" });
+            } else {
+                $("#bg_login").css({ "background-size": "100% auto" });
+            }
+            var _tw = $("#title").width();
+            $("#logo").css({ "left": (w / 2 - 162) + "px", "top": (h / 2) + "px", "opacity": "0" });
+            $("#title").css({ "left": (w / 2 - _tw / 2) + "px", "top": (h / 2 + 100) + "px", "opacity": "0" });
+            $("#input_username,#input_password,#login_button").css({ "left": (w / 2 - 400) + "px", "top": (h + 100) + "px", });
+        }
+        function showLogin() {
+            $("#logo").animate({ "opacity": "1", "top": "200px" }, 5000);
+            setTimeout("showTitle()", 2000);
+            setTimeout("showUsername()", 3000);
+            setTimeout("showPassword()", 3500);
+            setTimeout("showButton()", 4000);
+        }
+        function showTitle() {
+            $("#title").animate({ "opacity": "1", "top": "600px" }, 3000);
+        }
+        function showUsername() {
+            $("#input_username").animate({ "top": "900px" }, 2000);
+        }
+        function showPassword() {
+            $("#input_password").animate({ "top": "1050px" }, 1700);
+        }
+        function showButton() {
+            $("#login_button").animate({ "top": "1200px" }, 1400);
+        }
+        function inputUn(un) {
+            if (un == "on") {
+                $('#username').val('').css({ "color": "#fff", "text-align": "center", "text-indent": "0em" });
+                $('#ico_un').hide();
+            } else if (un == "out") {
+                $('#username').val('用户名').css({ "color": "#6bc0ff", "text-align": "left", "text-indent": "0.5em" });
+                $('#ico_un').show();
+            }
+            else if (un == "on1") {
+
+                $('#ico_psd').hide();
+                $('#password').val('').css({ "color": "#fff", "text-align": "center", "text-indent": "0em" }).attr('type', 'password');
+            }
+            else if (un == "out1") {
+                $('#ico_psd').show();
+                $('#password').val('密  码').css({ "color": "#6bc0ff", "text-align": "left", "text-indent": "0.5em" }).attr('type', 'text');
+            }
+        }
+        function Login() {
+            //if ($("#username").val() == "admin" && $("#password").val() == "888888") {
+            //    successLogin();
+            //}
+            //else {
+            //    alert('用户不存在或密码错误!');
+            //}
+            self.location = "devzeng://login?name=" + $("#username").val() + "&password=" + $("#password").val();
+            //successLogin();
+        }
+
+        function successLogin() {
+            hideLogin();
+        }
+        function hideLogin() {
+            $("#logo").animate({ "top": "-340px" }, 800);
+            //hideTitle();
+            setTimeout("hideTitle()", 300);
+            setTimeout("hideUsername()", 600);
+            setTimeout("hidePassword()", 800);
+            setTimeout("hideButton()", 1000);
+        }
+        function hideTitle() {
+            $("#title").animate({ "top": "-340px" }, 1000);
+        }
+        function hideUsername() {
+            var _h = $(window).height();
+            $("#input_username").animate({ "opacity": "hide", "bottom": _h + 100 + "px" }, 800);
+        }
+        function hidePassword() {
+            var _h = $(window).height();
+            $("#input_password").animate({ "opacity": "hide", "bottom": _h + 100 + "px" }, 900);
+        }
+        function hideButton() {
+            var _h = $(window).height();
+            $('#login_button').animate({ "opacity": "hide", "bottom": _h + 100 + "px" }, {
+                duration: 1000, easing: 'easeOutQuad', complete: function () {
+                    window.parent.Page1to2();
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="bg_login"></div>
+        <div id="logo" style="opacity:0;"></div>
+        <div id="title" style="opacity:0;">十一科技移动运维平台</div>
+        <div id="input_username" class="input_username" style="top:-100px;">
+            <input type="text" name="username" id="username" class="style_input" placeholder="用户名" />
+            <div id="ico_un"></div>
+        </div>
+        <div id="input_password" class="input_password" style="top:-100px;">
+            <input type="password" name="password" id="password" class="style_input" placeholder="密  码" />
+            <div id="ico_psd"></div>
+        </div>
+        <div id="login_button" data-animation="1" onclick="Login()" style="bottom:-100px;">登  录</div>
+    </div>
+</body>
+</html>

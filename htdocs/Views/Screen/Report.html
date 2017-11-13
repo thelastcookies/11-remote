@@ -1,0 +1,364 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>集团首页</title>
+    <link href="../../Content/Screen_11/css/Report.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/My97DatePicker/WdatePicker.js"></script>
+    <script src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <link href="../../Content/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        var dDate;
+        $(function () {
+            dDate = new Date();
+            dDate.setTime(dDate.getTime() - 24 * 60 * 60 * 1000);
+            var dMonth = dDate.getMonth() + 1;
+            dDay = dDate.getDate();
+            //if (sMonth < 10)
+            //{ sMonth = "0" + sMonth; }
+            //if (sDay < 10)
+            //{ sDay = "0" + sDay; }
+            dMonth = ("000" + dMonth).substr(-2);
+            dDay = ("000" + dDay).substr(-2);
+            var day_Date = dDate.getFullYear() + "-" + dMonth + "-" + dDay;
+            var month_Date = dDate.getFullYear() + "-" + dMonth;
+            var year_Date = dDate.getFullYear();
+
+            $("#day_input").val(day_Date);
+            $("#month_input").val(month_Date);
+            $("#year_input").val(year_Date);
+
+            //initTable("day");正式发布时注释
+        });
+        function goBack() {
+            window.parent.hideReoprt();
+        }
+        function initTable(_tableType) {
+            var _htmlString = "";
+            $("#dv_table").empty();
+            var _Time;
+            var _arrHeji = new Array();
+            //alert(sData.length);
+            _htmlString += "<table width='2710px' height='100%' border='0' cellpadding='0' cellspacing='0'>";
+            if (_tableType == "month" || _tableType == "day") {//月电量报表
+                if (_tableType == "month") {
+                    _Time = $("#month_input").val();
+                }
+                else {
+                    _Time = $("#day_input").val().substring(0, $("#day_input").val().length - 3);
+                }
+                var count_time = 0;//共有多少天
+                var _today = dDate.getFullYear() + "-" + ("000" + (dDate.getMonth() + 1)).substr(-2);
+                if (_today == _Time) {//如果是本月
+                    count_time = dDate.getDate();
+                }
+                else {//如果不是本月
+                    var arrTime = _Time.split('-');
+                    var dt_day = new Date(arrTime[0], arrTime[1], 0); //构造一个日期对象
+                    count_time = dt_day.getDate();//获取天数
+
+                }
+                $.post('http://58.215.8.162:8081/Api/Screen/GetReportMonth', { st: _Time + "-1", et: _Time + "-" + count_time + "-" + dDay + " 23:59:59", userId: 'admin' }, function (data) {
+                    var sData = eval(data.data);
+                    
+                    var _len = 0;
+                    var arr = new Array();
+                    var string_top = "";
+
+                    var mycars = new Array()
+                    var st_name = "";
+                    var st_num = 0;
+                    var st_data = "";
+                    var _day=1;
+                    if (sData.length > 0) {
+                        st_name = sData[0].stationName;
+
+                        string_top = "<table height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:2710px;\"><tbody><tr>";
+                        string_top += "<td class=\"table_top_td\" style=\"width:10%\">时间</td>";
+			arr.push(st_name);
+
+                        for (var k = 0; k < sData.length; k++) {
+                            if (st_name != sData[k].stationName) {
+                                st_name = sData[k].stationName;
+                                 arr.push(st_name);
+                            }
+                        }
+                        _len = 87.3 / arr.length;
+			_arrHeji = new Array(arr.length);
+                        for (var t = 0; t < arr.length; t++) {
+_arrHeji[t] =0;
+                            // string_top += "<td class=\"table_top_td\" style=\"width:" + _len + "%\">" + arr[t] + "（kWh）</td>";
+                            string_top += "<td class=\"table_top_td\" style=\"width:7.5%\">" + arr[t] + "（kWh）</td>";
+
+                        }
+                        string_top += "</tr></tbody></table>";
+st_name = sData[0].stationName;
+                        $("#td_top").html(string_top);
+                    }
+                    for (var k = 0; k < sData.length; k++) {
+                        if (st_name != sData[k].stationName) {
+                            mycars[st_num] = st_data.trim(' ');
+                            if (sData[k].time.split('-')[2] !="1"){
+                              st_data="";
+                              for (var i = 1; i < sData[k].time.split('-')[2]; i++) {
+                                st_data += "0 ";
+                              }
+                              st_data += sData[k].val + " ";
+                            }
+                            else {
+
+                              st_data = sData[k].val + " ";
+                            }
+
+
+                            st_num++;
+                            st_name = sData[k].stationName;
+                        }
+                        else {
+
+                            st_data += sData[k].val + " ";
+                        }
+                    }
+                    mycars[st_num] = st_data.trim(' ');
+                    for (var i = 1; i <= count_time; i++) {//循环该月的天数
+                        if (_Time + "-" + ("000" + i).substr(-2) == $("#day_input").val() && _tableType == "day") {
+                            _htmlString += "<tr><td class='td_highlight' width='10%'>" + _Time + "-" + ("000" + i).substr(-2) + "</td>";
+                        }
+                        else {
+                            _htmlString += "<tr><td width='10%'>" + _Time + "-" + ("000" + i).substr(-2) + "</td>";
+                        }
+                        for (var t = 0; t < mycars.length; t++) {//循环电站
+                            var re_data = parseFloat(mycars[t].split(' ')[i - 1]).toFixed(2);
+                            if (isNaN(re_data) || re_data<0) {
+                                re_data = 0;
+                            }
+
+
+                            if (_Time + "-" + ("000" + i).substr(-2) == $("#day_input").val() && _tableType == "day") {
+                                _htmlString += "<td  class='td_highlight' width='7.5%'>" + re_data + "</td>";
+                            }
+                            else {
+                                _htmlString += "<td width='7.5%'>" + re_data + "</td>";
+                            }
+                            re_data = parseFloat(mycars[t].split(' ')[i - 1]);
+                            if (isNaN(re_data) || re_data<0) {
+                                re_data = 0;
+                            }
+                            _arrHeji[t]+=re_data;
+                        }
+                        _htmlString += "</tr>";
+                    }
+                    _htmlString += "</table>";
+                    //alert(_htmlString);
+                    $("#dv_table").html(_htmlString);
+                    var string_bottom = "<div class=\"table_top_td\" style=\"width:10%\">合计</div>";
+
+                    for (var u = 0; u < _arrHeji.length; u++) {
+                        // string_bottom += "<div class=\"table_top_td\" style=\"width:" + _len + "%\"><span>" + _arrHeji[u].toFixed(2) + "</span></div>";
+                        string_bottom += "<div class=\"table_top_td\" style=\"width:7.5%\"><span>" + _arrHeji[u].toFixed(2) + "</span></div>";
+
+
+                    }
+                    $("#td_bottom").html(string_bottom);
+                    setlocation();
+                }, 'json');
+            }
+            else if (_tableType == "year") {//年电量报表
+                _Time = $("#year_input").val();
+                if (dDate.getFullYear() == _Time) {//如果是本年
+                    count_time = dDate.getMonth() + 1;
+                } else {
+                    count_time = 10;
+                }
+
+
+                $.post('http://58.215.8.162:8081/Api/Screen/GetReportYear', { st: _Time + "-1-1 0:00:00", et: _Time + "-" + count_time + "-" + dDay + " 23:59:59", userId: 'admin' }, function (data) {
+                    var sData = eval(data.data);
+		    
+                    var _len =0;
+                    var mycars = new Array()
+                    var st_name = "";
+                    var st_num = 0;
+                    var arr = new Array();
+                    var st_data = "";
+                    var string_top="";
+                    if (sData.length > 0) {
+                        st_name = sData[0].stationName;
+                         string_top="<table height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:2710px;\"><tbody><tr>";
+                         string_top +="<td class=\"table_top_td\" style=\"width:10%\">时间</td>";
+                         arr.push(st_name);
+                         for (var k = 0; k < sData.length; k++) {
+                             if (st_name != sData[k].stationName) {
+				 st_name = sData[k].stationName;
+                                 arr.push(st_name);
+                             }
+                         }
+                          _len = 87.3/arr.length;
+			  _arrHeji = new Array(arr.length);
+
+                         for(var t=0;t<arr.length;t++)
+                         {   
+                             _arrHeji[t] =0;
+                             // string_top +="<td class=\"table_top_td\" style=\"width:"+_len+"%\">"+arr[t]+"（kWh）</td>";
+                             string_top +="<td class=\"table_top_td\" style=\"width:7.5%\">"+arr[t]+"（kWh）</td>";
+
+                         }
+                         string_top +="</tr></tbody></table>"; 
+                            
+                         $("#td_top").html(string_top);
+                    
+                st_name = sData[0].stationName;
+                    }
+                    for (var k = 0; k < sData.length; k++) {
+                        if (st_name != sData[k].stationName) {
+                            mycars[st_num] = st_data.trim(' ');
+
+                            if (sData[k].time.split('-')[1] !="1"){
+                              st_data="";
+                              for (var i = 1; i < sData[k].time.split('-')[1]; i++) {
+                                st_data += "0 ";
+                              }
+                              st_data += sData[k].val + " ";
+                            }
+                            else {
+
+                              st_data = sData[k].val + " ";
+                            }
+                            st_num++;
+                            st_name = sData[k].stationName;
+                        }
+                        else {
+                            st_data += sData[k].val + " ";
+                        }
+                    }
+                    mycars[st_num] = st_data.trim(' ');
+
+
+                    if (dDate.getFullYear() == _Time) {//如果是本年
+                        for (var j = 1; j <= dDate.getMonth() + 1; j++) {//循环每个月
+                            _htmlString += "<tr><td width='10%'>" + dDate.getFullYear() + "-" + ("000" + j).substr(-2) + "</td>";
+                            for (var t = 0; t < mycars.length; t++) {//循环电站
+                                var re_data = parseFloat(mycars[t].split(' ')[j - 1]).toFixed(2);
+                                if (isNaN(re_data) || re_data<0) {
+                                    re_data = 0;
+                                }
+
+                                if (_Time + "-" + ("000" + j).substr(-2) == $("#day_input").val() && _tableType == "day") {
+                                    _htmlString += "<td  class='td_highlight' width='7.5%'>" + re_data + "</td>";
+                                }
+                                _htmlString += "<td width='7.5%'>" + re_data + "</td>";
+
+                                re_data = parseFloat(mycars[t].split(' ')[j - 1]);
+                                if (isNaN(re_data) || re_data<0) {
+                                    re_data = 0;
+                                }
+                                _arrHeji[t]+=re_data;
+                            }
+
+                            _htmlString += "</tr>";
+                        }
+                    }
+                    else {//如果不是本年
+                        for (var j = 1; j <= 10; j++) {//循环每个月
+                            _htmlString += "<tr><td width='7.5%'>" + _Time + "-" + ("000" + j).substr(-2) + "</td>";
+                            for (var t = 0; t < mycars.length; t++) {//循环电站
+                                var re_data = parseFloat(mycars[t].split(' ')[j - 1]).toFixed(2);
+                                if (isNaN(re_data) || re_data<0) {
+                                    re_data = 0;
+                                }
+                                _htmlString += "<td width='7.5%'>" + re_data + "</td>";
+                                re_data = parseFloat(mycars[t].split(' ')[j - 1]);
+                                if (isNaN(re_data) || re_data<0) {
+                                    re_data = 0;
+                                }
+                                _arrHeji[t]+=re_data;
+                            }
+
+                            _htmlString += "</tr>";
+                        }
+                    }
+
+                    _htmlString += "</table>";
+                    $("#dv_table").html(_htmlString);
+                    var  string_bottom="<div class=\"table_top_td\" style=\"width:10%\">合计</div>";
+                    
+                    for (var u = 0; u < _arrHeji.length; u++) {
+                        // string_bottom += "<div class=\"table_top_td\" style=\"width:" + _len + "%\"><span>" + _arrHeji[u].toFixed(2) + "</span></div>";
+                        string_bottom += "<div class=\"table_top_td\" style=\"width:7.5%\"><span>" + _arrHeji[u].toFixed(2) + "</span></div>";
+
+                        
+                    }
+                    $("#td_bottom").html(string_bottom);
+                    setlocation();
+                }, 'json');
+
+
+
+            }
+            //将高亮的行显示在醒目位置
+
+            //setTimeout("setlocation()",1000);
+
+
+
+        }
+        function setlocation() {
+            $(".table_middle").scrollTop(0);
+            var _h = $('#dv_table').height();
+            var _hl = $('.td_highlight').position().top;
+            //alert(_h);
+            //$(".table_middle").stop(true);
+            //alert(_hl+","+(_hl-365));
+            $(".table_middle").animate({ scrollTop: _hl - 365 }, 1000);
+            //alert($('.td_highlight').position().top);
+        }
+        function selectType(_type) {
+            $('#day_input').hide();
+            $('#month_input').hide();
+            $('#year_input').hide();
+            $('#btn_day').attr("class", "btn_time");
+            $('#btn_month').attr("class", "btn_time");
+            $('#btn_year').attr("class", "btn_time");
+
+            $('#' + _type + '_input').show();
+            $('#btn_' + _type).attr("class", "btn_time_active");
+            initTable(_type);
+        }
+
+    </script>
+</head>
+<body>
+    <div id="bg_test"></div>
+    <div class="container">
+        <div id="title">电量报表</div>
+        <div id="btn_back" onclick="goBack()">返回</div>
+        <div id="input_time">
+            时间：
+            <input id="day_input" class="Wdate" size="24" readonly="readonly" type="text"
+                   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowToday:true,lang:'zh-cn',maxDate:'%y-%M-%d',onpicked:function(){javascript:initTable('day');}})">
+            <input id="month_input" style="display:none;" id="m_time" class="Wdate" size="24" readonly="readonly" type="text"
+                   onfocus="WdatePicker({dateFmt:'yyyy-MM',alwaysUseStartDate:true,lang:'zh-cn',maxDate:'%y-%M',onpicked:function(){javascript:initTable('month');}})">
+            <input id="year_input" style="display:none;" id="y_time" class="Wdate" size="24" readonly="readonly" type="text"
+                   onfocus="WdatePicker({dateFmt:'yyyy',alwaysUseStartDate:true,lang:'zh-cn',minDate:'2016',maxDate:'%y',onpicked:function(){javascript:initTable('year');}})">
+        </div>
+        <div id="btn_day" class="btn_time_active" style="left:870px" onclick="selectType('day')">日电量</div>
+        <div id="btn_month" class="btn_time" style="left:1018px" onclick="selectType('month')">月电量</div>
+        <div id="btn_year" class="btn_time" style="left:1166px" onclick="selectType('year')">年电量</div>
+        <div class="table">
+            <div class="table_top">
+                <div id="td_top"></div>
+            </div>
+            <div class="table_middle">
+                <div id="dv_table"></div>
+            </div>
+            <div class="table_bottom">
+                <div id="td_bottom"></div>
+                
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

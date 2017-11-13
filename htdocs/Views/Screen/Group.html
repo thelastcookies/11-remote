@@ -1,0 +1,1576 @@
+﻿
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>集团首页</title>
+
+    <link href="../../Content/Screen_11/css/Group.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/jquery/js/jquery-1.9.1.js"></script>
+    <script src="../../Content/jquery/js/jquery.rotate.min.js"></script>
+    <script src="../../Content/jquery/js/jquery.easing.min.js"></script>
+    <script src="../../Content/HighChart/highcharts.js" type="text/javascript"></script>
+    <script src="../../Content/Operation/FullCalendar/lib/moment.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var isFirst = true;
+        var colors = ['#01A9E0', '#9BE5FD'];
+        Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+            return {
+                linearGradient: {
+                    x1: 0,
+                    y1: 1,
+                    x2: 0,
+                    y2: 0
+                },
+                stops: [
+                 [0, '#01A9E0'],
+                 [1, '#9BE5FD']
+                ]
+            };
+        });
+
+        function initGroupPage() {
+            $("#bg_l,#bg_r").animate({ top: 0 }, {
+                duration: 1000, easing: '', complete: function () {
+                    if (isFirst) {//只加载一次
+                        isFirst = false;
+                        $("#bg_l").animate({ left: -50 }, {
+                            duration: 1500, easing: '', complete: function () { }
+                        });
+                        $("#bg_r").animate({ right: -50 }, {
+                            duration: 1500, easing: '', complete: function () { }
+                        });
+                        $("#bg_c").animate({ left: 221, width: 1478 }, {
+                            duration: 1500, easing: '', complete: function () {
+                                initInfoData();
+                            }
+                        });
+                        $("#map_China").animate({ left: 490, width: 900, height: 854, top: 176 }, {
+                            duration: 1000, easing: '', complete: function () {
+                                initInfo1();
+                                initPower();
+                                setTimeout("initDl()", 500);
+                            }
+                        });
+                        $("#title").animate({ top: 0 }, {
+                            duration: 1500, easing: '', complete: function () {
+                                bindOperate();
+                                $("#btn_report").animate({ width: 142 }, 300);
+                            }
+                        });
+
+
+                    }
+                }
+            });
+
+        }
+
+        function initGroupPageSheng() {
+            $("#bg_l,#bg_r").animate({ top: 0 }, {
+                duration: 1000, easing: '', complete: function () {
+                    if (isFirst) {//只加载一次
+                        isFirst = false;
+                        $("#bg_l").animate({ left: -50 }, {
+                            duration: 1500, easing: '', complete: function () { }
+                        });
+                        $("#bg_r").animate({ right: -50 }, {
+                            duration: 1500, easing: '', complete: function () { }
+                        });
+                        $("#bg_c").animate({ left: 221, width: 1478 }, {
+                            duration: 1500, easing: '', complete: function () {
+                                initInfoData();
+                            }
+                        });
+                        $("#map_China").animate({ left: 490, width: 900, height: 854, top: 176 }, {
+                            duration: 1000, easing: '', complete: function () {
+                                //initInfo1();
+                                initPower();
+                                setTimeout("initDl()", 500);
+                            }
+                        });
+                        $("#title").animate({ top: 0 }, {
+                            duration: 1500, easing: '', complete: function () {
+                                bindOperate();
+                                $("#btn_report").animate({ width: 142 }, 300);
+                            }
+                        });
+                        //initInfoData();
+                    }
+                }
+            });
+
+        }
+
+
+        // 
+        function completeGroupPage(_stationId) {
+            $("#nmg_plant1,#nmg_plant2,#nmg_plant3,#nmg_plant4,#nmg_plant5,#nmg_plant6,#nmg_plant7,#nmg_plant8,#nmg_plant9,#nmg_plant10").hide();
+            $("#map_nmg,#map_bj,#map_hn,#map_zj").animate({ top: 183, left: 834, width: 424, height: 435, opacity: 'hide' }, {
+                duration: 1000, easing: '', complete: function () {
+                }
+            });
+            $("#map_back").hide();
+            isGotoStation = "1";
+            //hideStation2();
+            $("#station_1,#station_2,#station_3,#station_4,#station_5,#station_6,#station_7,#station_8,#station_9,#station_10").hide();
+            $("#bg_l").animate({ left: 689 }, 1000);
+            $("#bg_r").animate({ right: 689 }, 1000);
+            $("#bg_c").animate({ left: 960, width: 0 }, 1000);
+            $("#title").animate({ top: -126 }, 1000);
+            $("#btn_report").animate({ width: 0 }, 300);
+            $("#chart_1,#chart_2,#chart_line").hide();
+            //$("#chart_2").animate({ right: -604 }, 500);
+            $("#map_China").animate({ left: 1920, width: 0, height: 0, top: 538 }, {
+                duration: 1000, easing: '', complete: function () {
+                    $("#bg_l").animate({ top: 1075 }, {
+                        duration: 1000, easing: '', complete: function () {
+                            //bindOperate();
+                            window.parent.Page2to3(_stationId);
+                        }
+                    });
+
+                    $("#bg_r,#bg_c").animate({ top: 1075 }, {
+                        duration: 1000, easing: '', complete: function () {
+
+                        }
+                    });
+                }
+            });
+        }
+        function loadSheng(_ShengId) {
+            //initInfoData();
+            initGroupPageSheng();
+            //$('#map_China').animate({ "opacity": "0.2" }, 1000);
+            //$("#plant_1,#plant_2,#plant_3,#plant_4,#plant_5,#plant_6,#plant_7,#plant_8,#plant_9,#plant_10,#plant_11").hide();
+            //$("#plant_1_name,#plant_2_name,#plant_3_name,#plant_4_name,#plant_5_name,#plant_6_name,#plant_7_name,#plant_8_name,#plant_9_name,#plant_10_name,#plant_11_name").hide();
+            //$("#plant_1_name").css("left", "1076px");
+            //$("#plant_2_name").css("right", "1015px");
+            //$("#plant_3_name").css("right", "1000px");
+            //$("#plant_4_name").css("left", "1142px");
+            //$("#plant_5_name").css("right", "935px");
+            //$("#plant_6_name").css("left", "1153px");
+            //$("#plant_7_name").css("left", "1211px");
+            //$("#plant_8_name").css("left", "1222px");
+            //$("#plant_9_name").css("right", "952px");
+            //$("#plant_10_name").css("left", "1232px");
+            //$("#plant_11_name").css("left", "1302px");
+            //$("#map_nmg").show().animate({ top: 143, left: 510, width: 850, height: 925 }, {
+            //    duration: 1000, easing: '', complete: function () {
+            //    }
+            //});
+            ////返回全国地图时动画
+            //$("#map_back").animate({ width: 392 }, {
+            //    duration: 1000, easing: '', complete: function () {
+            //    }
+            //}).unbind('click').click(function () {
+            //    $("#nmg_plant1,#nmg_plant2,#nmg_plant3,#nmg_plant4,#nmg_plant5,#nmg_plant6,#nmg_plant7").hide();
+            //    $("#map_nmg").animate({ top: 183, left: 834, width: 424, height: 435, opacity: 'hide' }, {
+            //        duration: 1000, easing: '', complete: function () {
+            //            $('#map_China').animate({ opacity: 1 }, 1000);
+            //        }
+            //    });
+            //    $("#map_back").animate({ width: 0 }, {
+            //        duration: 1000, easing: '', complete: function () {
+            //        }
+            //    })
+            //    hideStationAll();
+            //});
+            //hideInfoAll();
+            if (_ShengId == "nmg") { ShowSheng_nmg(); }
+            else if (_ShengId == "bj") { ShowSheng_bj(); }
+            else if (_ShengId == "hn") { ShowSheng_hn(); }
+            else if (_ShengId == "zj") { ShowSheng_zj(); }
+            else if (_ShengId == "tj" || _ShengId == "sd" || _ShengId == "hain") {
+                setTimeout("initInfo1()", 2000);
+            }
+                /////////
+        }
+        function bindOperate() {
+            $("#btn_nmg_1,#btn_nmg_2,#btn_nmg_3,#btn_nmg_4,#btn_nmg_5,#btn_nmg_6,#btn_nmg_7,#plant_1,#plant_2,#plant_3,#plant_4,#plant_5,#plant_6,#plant_7")
+               .mouseover(function () { $('#nmg_hover').show(); })
+               .mouseout(function () { $('#nmg_hover').hide(); })
+               .unbind('click').click(function () {
+                   ShowSheng_nmg();
+               });
+            $("#btn_bj_1,#plant_8_name")
+                .mouseover(function () { $('#bj_hover').show(); })
+               .mouseout(function () { $('#bj_hover').hide(); })
+               .unbind('click').click(function () {
+
+                   ShowSheng_bj();
+               });
+            $("#btn_hn_1,#btn_hn_2")
+                .mouseover(function () { $('#hn_hover').show(); })
+               .mouseout(function () { $('#hn_hover').hide(); })
+               .unbind('click').click(function () {
+
+                   ShowSheng_hn();
+               });
+            $("#btn_zj_1")
+                .mouseover(function () { $('#zj_hover').show(); })
+               .mouseout(function () { $('#zj_hover').hide(); })
+               .unbind('click').click(function () {
+
+                   ShowSheng_zj();
+               });
+        }
+        Array.prototype.sum = function () {
+            return this.reduce(function (t, s) { return t + s }, 0);
+        }
+        function ShowSheng_nmg() {
+            $('#map_China').animate({ "opacity": "0.2" }, 1000);
+            $("#plant_1,#plant_2,#plant_3,#plant_4,#plant_5,#plant_6,#plant_7,#plant_8,#plant_9,#plant_10,#plant_11,#plant_12,#plant_13,#plant_14").hide();
+            $("#plant_1_name,#plant_2_name,#plant_3_name,#plant_4_name,#plant_5_name,#plant_6_name,#plant_7_name,#plant_8_name,#plant_9_name,#plant_10_name,#plant_11_name,#plant_12_name,#plant_13_name,#plant_14_name").hide();
+            $("#plant_1_name").css("left", "1076px");
+            $("#plant_2_name").css("right", "1015px");
+            $("#plant_3_name").css("right", "1000px");
+            $("#plant_4_name").css("left", "1142px");
+            $("#plant_5_name").css("right", "935px");
+            $("#plant_6_name").css("left", "1153px");
+            $("#plant_7_name").css("left", "1211px");
+            $("#plant_8_name").css("left", "1222px");
+            $("#plant_9_name").css("right", "952px");
+            $("#plant_10_name").css("left", "1232px");
+            $("#plant_11_name").css("left", "1302px");
+	    $("#plant_12_name").css("left", "1043px");
+            $("#plant_13_name").css("left", "925px");
+            $("#plant_14_name").css("left", "974px");
+            $("#map_nmg").show().animate({ top: 143, left: 510, width: 850, height: 925 }, {
+                duration: 1000, easing: '', complete: function () {
+                }
+            });
+            //返回全国地图时动画
+            $("#map_back").animate({ width: 392 }, {
+                duration: 1000, easing: '', complete: function () {
+                }
+            }).unbind('click').click(function () {
+                $("#nmg_plant1,#nmg_plant2,#nmg_plant3,#nmg_plant4,#nmg_plant5,#nmg_plant6,#nmg_plant7").hide();
+                $("#map_nmg").animate({ top: 183, left: 834, width: 424, height: 435, opacity: 'hide' }, {
+                    duration: 1000, easing: '', complete: function () {
+                        $('#map_China').animate({ opacity: 1 }, 1000);
+                    }
+                });
+                $("#map_back").animate({ width: 0 }, {
+                    duration: 1000, easing: '', complete: function () {
+                    }
+                })
+                hideStationAll();
+            });
+            hideInfoAll();
+        }
+        function ShowSheng_bj() {
+            $('#map_China').animate({ "opacity": "0.2" }, 1000);
+            $(".plant, .plant_name").hide();
+            $("#map_bj").show().animate({ top: 343, left: 710, width: 389, height: 412 }, {
+                duration: 1000, easing: '', complete: function () {
+                    $("#nmg_plant8_light").show().animate({ top: 488, left: 908, opacity: 'hide', width: 56, height: 84 }, 500);
+                    $('#nmg_plant8').show();
+                }
+            });
+            //返回全国地图时动画
+            $("#map_back").animate({ width: 392 }, {
+                duration: 1000, easing: '', complete: function () {
+                }
+            }).unbind('click').click(function () {
+                $("#nmg_plant8").hide();
+                $("#map_bj").animate({ top: 183, left: 834, width: 424, height: 435, opacity: 'hide' }, {
+                    duration: 1000, easing: '', complete: function () {
+                        $('#map_China').animate({ opacity: 1 }, 1000);
+
+                    }
+                });
+                $("#map_back").animate({ width: 0 }, {
+                    duration: 1000, easing: '', complete: function () {
+
+                    }
+                })
+                hideStationBJ();
+            });
+            $(".Group_info").animate({ left: -756, opacity: 0.2 }, {
+                duration: 300, easing: '', complete: function () {
+                    $("#station_8").animate({ left: -20, opacity: 1 }, {
+                        duration: 500, easing: '', complete: function () {
+
+                        }
+                    });
+                }
+            });
+
+        }
+        function hideStationBJ() {
+            $("#station_8").animate({ left: -812, opacity: 0.2 }, { duration: 300, easing: '', complete: function () { /*initInfo1(); setTimeout("initInfo1();", 500);*/ } })
+            setTimeout("initInfo1();", 400);
+        }
+        function ShowSheng_hn() {
+            $('#map_China').animate({ "opacity": "0.2" }, 1000);
+            $(".plant, .plant_name").hide();
+            $("#map_hn").show().animate({ top: 143, left: 510, width: 850, height: 925 }, {
+                duration: 1000, easing: '', complete: function () {
+                    $("#nmg_plant9_light").show().animate({ top: 450, left: 878, opacity: 'hide', width: 56, height: 84 }, 500);
+                    $('#nmg_plant9').show();
+                }
+            });
+            //返回全国地图时动画
+            $("#map_back").animate({ width: 392 }, {
+                duration: 1000, easing: '', complete: function () {
+                }
+            }).unbind('click').click(function () {
+                $("#nmg_plant9").hide();
+                $("#map_hn").animate({ top: 183, left: 834, width: 424, height: 435, opacity: 'hide' }, {
+                    duration: 1000, easing: '', complete: function () {
+                        $('#map_China').animate({ opacity: 1 }, 1000);
+                    }
+                });
+                $("#map_back").animate({ width: 0 }, {
+                    duration: 1000, easing: '', complete: function () {
+
+                    }
+                })
+                hideStationHN();
+            });
+            $(".Group_info").animate({ left: -756, opacity: 0.2 }, {
+                duration: 300, easing: '', complete: function () {
+                    $("#station_9").animate({ left: -20, opacity: 1 }, {
+                        duration: 500, easing: '', complete: function () {}
+                    });
+                }
+            });
+
+        }
+        function hideStationHN() {
+            $("#station_9").animate({ left: -812, opacity: 0.2 }, { duration: 300, easing: '', complete: function () { /*initInfo1(); setTimeout("initInfo1();", 500);*/ } })
+            setTimeout("initInfo1();", 400);
+        }
+        function ShowSheng_zj() {
+            $('#map_China').animate({ "opacity": "0.2" }, 1000);
+            $(".plant, .plant_name").hide();
+            $("#map_zj").show().animate({ top: 143, left: 510, width: 850, height: 925 }, {
+                duration: 1000, easing: '', complete: function () {
+                    $("#nmg_plant10_light").show().animate({ top: 503, left: 1115, opacity: 'hide', width: 56, height: 84 }, 500);
+                    $('#nmg_plant10').show();
+                }
+            });
+            //返回全国地图时动画
+            $("#map_back").animate({ width: 392 }, {
+                duration: 1000, easing: '', complete: function () {
+                }
+            }).unbind('click').click(function () {
+                $("#nmg_plant10").hide();
+                $("#map_zj").animate({ top: 183, left: 834, width: 424, height: 435, opacity: 'hide' }, {
+                    duration: 1000, easing: '', complete: function () {
+                        $('#map_China').animate({ opacity: 1 }, 1000);
+                    }
+                });
+                $("#map_back").animate({ width: 0 }, {
+                    duration: 1000, easing: '', complete: function () {
+
+                    }
+                })
+                hideStationZJ();
+            });
+            $(".Group_info").animate({ left: -756, opacity: 0.2 }, {
+                duration: 300, easing: '', complete: function () {
+                    $("#station_10").animate({ left: -20, opacity: 1 }, {
+                        duration: 500, easing: '', complete: function () { }
+                    });
+                }
+            });
+
+        }
+        function hideStationZJ() {
+            $("#station_10").animate({ left: -812, opacity: 0.2 }, { duration: 300, easing: '', complete: function () { /*initInfo1(); setTimeout("initInfo1();", 500);*/ } })
+            setTimeout("initInfo1();", 400);
+        }
+
+        $(function () {
+            //$("#chart_line,#chart_bar").html('');
+            //initInfoData();
+            initStationInfo();
+            //initGroupPage();//发布时注释
+            $("#map_back").css("width", "0px");
+            $("#station_1,#station_2,#station_3,#station_4,#station_5,#station_6,#station_7,#station_8,#station_9,#station_10")
+                .mouseover(function () {
+                    $(this).stop().css({ "background-image": "url(../../Content/Screen_11/img/Group/Group_station_title_hover.png)", "color": "#fff" }).animate({ left: 40 }, {
+                        duration: 500, easing: '', complete: function () { }
+                    });
+                    var id = $(this).attr("id");
+                    var index = id.substr(8);
+                    var top = $("#nmg_plant" + index).offset().top - 44;
+                    var left = $("#nmg_plant" + index).offset().left - 48;
+
+                    $("#plant_cursor").css({ "top": top + "px", "left": left + "px" }).show();
+                })
+                .mouseout(function () {
+                    $(this).stop().css({ "background-image": "url(../../Content/Screen_11/img/Group/Group_station_title.png)", "color": "#a5ffff" }).animate({ left: -20 }, {
+                        duration: 500, easing: '', complete: function () { }
+                    });
+                    $("#plant_cursor").hide();
+                })
+                .unbind('click').click(function () {
+                    $(this).stop().css({ "background-image": "url(../../Content/Screen_11/img/Group/Group_station_title.png)", "color": "#a5ffff" }).animate({ left: -20 }, {
+                        duration: 500, easing: '', complete: function () { }
+                    });
+                    $("#station_1,#station_2,#station_3,#station_4,#station_5,#station_6,#station_7,#station_8,#station_9,#station_10").unbind();
+                    $("#plant_cursor").hide();
+                    var stationId = $(this).attr("data-id");
+                    //window.parent.Page2to3(stationId);
+                    completeGroupPage(stationId);
+                });
+            $("#plant_1_rain,#plant_2_rain,#plant_3_rain,#plant_4_rain,#plant_5_rain,#plant_6_rain,#plant_7_rain,#plant_8_rain,#plant_9_rain,#plant_10_rain,#plant_11_rain,#plant_12_rain,#plant_13_rain,#plant_14_rain").css("top", "-44px");
+            $("#nmg_plant1,#nmg_plant2,#nmg_plant3,#nmg_plant4,#nmg_plant5,#nmg_plant6,#nmg_plant7,#nmg_plant8,#nmg_plant9,#nmg_plant10").mouseover(function () {
+                var top = $(this).offset().top - 44;
+                var left = $(this).offset().left - 44;
+                var id = $(this).attr("id");
+                var index = id.substr(9);
+                $("#plant_cursor").css({ "top": top + "px", "left": left + "px" }).show();
+
+                $("#station_" + index).mouseover();
+            }).mouseout(function () {
+                var id = $(this).attr("id");
+                var index = id.substr(9);
+                $("#plant_cursor").hide();
+                $("#station_" + index).mouseout();
+            }).unbind('click').click(function () {
+                var id = $(this).attr("id");
+                var index = id.substr(9);
+                var stationId = $("#station_" + index).attr("data-id");
+                //window.parent.PageSwitch(stationId);
+                $('#station_' + stationId).stop().css({ "background-image": "url(../../Content/Screen_11/img/Group/Group_station_title.png)", "color": "#a5ffff" }).animate({ left: 256 }, {
+                    duration: 500, easing: '', complete: function () { }
+                });
+                $("#plant_cursor").hide();
+                completeGroupPage(stationId);
+            });
+
+            setInterval("initInfoData();", 60 * 1000);
+            setInterval("initStationInfo();", 60 * 1000);
+        });
+
+        function initInfoData() {
+
+            $.post('http://58.215.8.162:8081/Api/Screen/GetCliqueInfo', { id: "Freenep", userId: "admin" }, function (data) {
+
+                var list_info = eval(data);//集团信息
+
+                /****************标注 WindowInfo******************/
+                var jt_gl = list_info['power'];
+                var jt_rl = list_info['rl'];
+                var jt_rdl = list_info['dayDL'];
+                var jt_ndl = list_info['yearDL'];
+                var jt_ljdl = list_info['sumDL'];
+
+                var jt_line = list_info['line'];
+                var jt_chart = list_info['chart'];
+
+                for (var i = 0; i < jt_line.length; i++) {
+                    jt_line[i] = Number((jt_line[i] / 1000).toFixed(2));
+                }
+
+                for (var i = 0; i < jt_chart.length; i++) {
+                    jt_chart[i] = Number((jt_chart[i] / 10000 / 1000).toFixed(2));
+                }
+
+
+                showElecBarChart(jt_chart, list_info['chartDay']);
+                showPowerLineChart(jt_line);
+
+                if (!isNaN(jt_gl)) {
+                    if (jt_gl.toString().split(".")[0].length >= 4) {
+
+                        jt_gl = parseFloat(jt_gl / 1000).toFixed(2);
+                        $("#dw_gl").text("MW");
+                    }
+                    else {
+                        $("#dw_gl").text("kW");
+                        jt_gl = parseFloat(jt_gl).toFixed(2);
+                    }
+                }
+                else {
+                    $("#dw_gl").text("kW");
+                    jt_gl = parseFloat(jt_gl).toFixed(2);
+                }
+
+                if (!isNaN(jt_rl)) {
+                    if (jt_rl.toString().split(".")[0].length >= 4) {
+                        jt_rl = (jt_rl / 1000).toFixed(2);
+                        $("#dw_rl").text("MWp");
+                    } else {
+                        jt_rl = parseFloat(jt_rl).toFixed(2);
+                        $("#dw_rl").text("kWp");
+                    }
+                }
+                else {
+                    jt_rl = parseFloat(jt_rl).toFixed(2);
+                    $("#dw_rl").text("kWp");
+                }
+
+
+                if (!isNaN(jt_ndl)) {
+                    if (jt_ndl.toString().split(".")[0].length >= 5) {
+                        jt_ndl = (jt_ndl / 10000).toFixed(2);
+                        $("#dw_nf").text("万kWh");
+                    } else {
+                        jt_ndl = parseFloat(jt_ndl).toFixed(2);
+                        $("#dw_nf").text("kWh");
+                    }
+                }
+                else {
+                    jt_ndl = parseFloat(jt_ndl).toFixed(2);
+                    $("#dw_nf").text("kWh");
+                }
+
+                if (!isNaN(jt_rdl)) {
+                    if (jt_rdl.toString().split(".")[0].length >= 5) {
+                        jt_rdl = (jt_rdl / 10000).toFixed(2);
+                        $("#dw_rf").text("万kWh");
+                    } else {
+                        jt_rdl = parseFloat(jt_rdl).toFixed(2);
+                        $("#dw_rf").text("kWh");
+                    }
+                }
+                else {
+                    jt_rdl = parseFloat(jt_rdl).toFixed(2);
+                    $("#dw_rf").text("kWh");
+                }
+
+                if (!isNaN(jt_ljdl)) {
+                    if (jt_ljdl.toString().split(".")[0].length >= 5) {
+                        jt_ljdl = (jt_ljdl / 10000).toFixed(2);
+                        $("#dw_lj").text("万kWh");
+                    } else {
+                        jt_ljdl = parseFloat(jt_ljdl).toFixed(2);
+                        $("#dw_lj").text("kWh");
+                    }
+                }
+                else {
+                    jt_ljdl = parseFloat(jt_ljdl).toFixed(2);
+                    $("#dw_lj").text("kWh");
+                }
+                $("#spYearDl").text(jt_ndl);//年总发电量
+                $("#spLJDl").text(jt_ljdl);//累计发电量
+                $("#realPower").text(jt_gl);
+                $("#spDayDl").text(jt_rdl);
+                $("#realrl").text(jt_rl);
+
+
+            }, 'json');
+
+
+        }
+
+
+        function initPower() {
+            $("#chart_1").animate({ right: -20 }, {
+                duration: 400, easing: '', complete: function () {
+                    //showPowerLineChart();
+                }
+            });
+            $("#chart_line").animate({ right: 130 }, {
+                duration: 400, easing: '', complete: function () {
+                    //showPowerLineChart();
+                }
+            });
+        }
+        function initDl() {
+            $("#chart_2").animate({ right: -20 }, {
+                duration: 400, easing: '', complete: function () {
+                    //showElecBarChart();
+                }
+            });
+        }
+
+        function initStationInfo() {
+            $.post('http://58.215.8.162:8081/Api/Screen/GetStationList', { userId: "admin", privinceId: 5 }, function (data) {
+
+
+                var list_info = eval(data.data);//集团信息
+
+                for (var p in list_info) {//遍历json数组时，这么写p为索引，0,1
+                    var jt_gl = list_info[p].power;
+                    var jt_rdl = list_info[p].dl;
+                    var gl_dw = "";
+                    var dl_dw = "";
+
+                    if (!isNaN(jt_gl)) {
+                        if (jt_gl.toString().split(".")[0].length >= 4) {
+                            gl_dw = "MW";
+                            jt_gl = parseFloat(jt_gl / 1000).toFixed(2);
+                        }
+                        else {
+                            gl_dw = "kW";
+                            jt_gl = parseFloat(jt_gl).toFixed(2);
+                        }
+                    }
+                    else {
+                        gl_dw = "kW";
+                        jt_gl = parseFloat(jt_gl).toFixed(2);
+                    }
+
+                    if (!isNaN(jt_rdl)) {
+                        if (jt_rdl.toString().split(".")[0].length >= 5) {
+                            jt_rdl = (jt_rdl / 10000).toFixed(2);
+                            dl_dw = "万kWh";
+                        } else {
+                            jt_rdl = parseFloat(jt_rdl).toFixed(2);
+                            dl_dw = "kWh";
+                        }
+                    }
+                    else {
+                        jt_rdl = parseFloat(jt_rdl).toFixed(2);
+                        dl_dw = "kWh";
+                    }
+
+
+
+                    if (list_info[p].name == "巴音") {
+                        $("#spStationPower1").text(jt_gl + gl_dw);
+                        $("#spStationDl1").text(jt_rdl + dl_dw);
+                    }
+                    else if (list_info[p].name == "九十九泉") {
+                        $("#spStationPower2").text(jt_gl + gl_dw);
+                        $("#spStationDl2").text(jt_rdl + dl_dw);
+                    }
+                    else if (list_info[p].name == "红牧") {
+                        $("#spStationPower3").text(jt_gl + gl_dw);
+                        $("#spStationDl3").text(jt_rdl + dl_dw);
+                    }
+                    else if (list_info[p].name == "胜利") {
+                        $("#spStationPower4").text(jt_gl + gl_dw);
+                        $("#spStationDl4").text(jt_rdl + dl_dw);
+                    }
+                    else if (list_info[p].name == "乌拉特") {
+                        $("#spStationPower5").text(jt_gl + gl_dw);
+                        $("#spStationDl5").text(jt_rdl + dl_dw);
+                    }
+                    else if (list_info[p].name == "巴拉贡") {
+                        $("#spStationPower6").text(jt_gl + gl_dw);
+                        $("#spStationDl6").text(jt_rdl + dl_dw);
+                    }
+                    else if (list_info[p].name == "润博") {
+                        $("#spStationPower7").text(jt_gl + gl_dw);
+                        $("#spStationDl7").text(jt_rdl + dl_dw);
+                    }
+                    else if (list_info[p].name == "北汽") {
+                        $("#spStationPower8").text(jt_gl + gl_dw);
+                        $("#spStationDl8").text(jt_rdl + dl_dw);
+                    }
+                    else if (list_info[p].name == "珠光") {
+
+                        $("#spStationPower10").text(jt_gl + gl_dw);
+                        $("#spStationDl10").text(jt_rdl + dl_dw);
+                    }
+                }
+            }, 'json');
+
+            $.post('http://58.215.8.162:8081/Api/Screen/GetStationList', { userId: "admin", privinceId: 1 }, function (data) {
+
+                var list_info = eval(data.data);//集团信息
+
+                //console.log(data.data);
+                for (var p in list_info) {//遍历json数组时，这么写p为索引，0,1
+
+                    //alert(list_info[p].name);
+                    var jt_gl = list_info[p].power;
+                    var jt_rdl = list_info[p].dl;
+                    var gl_dw = "";
+                    var dl_dw = "";
+
+                    if (!isNaN(jt_gl)) {
+                        if (jt_gl.toString().split(".")[0].length >= 4) {
+                            gl_dw = "MW";
+                            jt_gl = parseFloat(jt_gl / 1000).toFixed(2);
+                        }
+                        else {
+                            gl_dw = "kW";
+                            jt_gl = parseFloat(jt_gl).toFixed(2);
+                        }
+                    }
+                    else {
+                        gl_dw = "kW";
+                        jt_gl = parseFloat(jt_gl).toFixed(2);
+                    }
+
+                    if (!isNaN(jt_rdl)) {
+                        if (jt_rdl.toString().split(".")[0].length >= 5) {
+                            jt_rdl = (jt_rdl / 10000).toFixed(2);
+                            dl_dw = "万kWh";
+                        } else {
+                            jt_rdl = parseFloat(jt_rdl).toFixed(2);
+                            dl_dw = "kWh";
+                        }
+                    }
+                    else {
+                        jt_rdl = parseFloat(jt_rdl).toFixed(2);
+                        dl_dw = "kWh";
+                    }
+    if (list_info[p].name == "北汽") {
+                        $("#spStationPower8").text(jt_gl + gl_dw);
+                        $("#spStationDl8").text(jt_rdl + dl_dw);
+ }
+
+                }
+            }, 'json');
+            $.post('http://58.215.8.162:8081/Api/Screen/GetStationList', { userId: "admin", privinceId: 11 }, function (data) {
+
+
+                var list_info = eval(data.data);//集团信息
+
+
+                //console.log(data.data);
+                for (var p in list_info) {//遍历json数组时，这么写p为索引，0,1
+
+                    //alert(list_info[p].name);
+                    var jt_gl = list_info[p].power;
+                    var jt_rdl = list_info[p].dl;
+                    var gl_dw = "";
+                    var dl_dw = "";
+
+                    if (!isNaN(jt_gl)) {
+                        if (jt_gl.toString().split(".")[0].length >= 4) {
+                            gl_dw = "MW";
+                            jt_gl = parseFloat(jt_gl / 1000).toFixed(2);
+                        }
+                        else {
+                            gl_dw = "kW";
+                            jt_gl = parseFloat(jt_gl).toFixed(2);
+                        }
+                    }
+                    else {
+                        gl_dw = "kW";
+                        jt_gl = parseFloat(jt_gl).toFixed(2);
+                    }
+
+                    if (!isNaN(jt_rdl)) {
+                        if (jt_rdl.toString().split(".")[0].length >= 5) {
+                            jt_rdl = (jt_rdl / 10000).toFixed(2);
+                            dl_dw = "万kWh";
+                        } else {
+                            jt_rdl = parseFloat(jt_rdl).toFixed(2);
+                            dl_dw = "kWh";
+                        }
+                    }
+                    else {
+                        jt_rdl = parseFloat(jt_rdl).toFixed(2);
+                        dl_dw = "kWh";
+                    }
+                    if (list_info[p].name == "珠光") {
+                        $("#spStationPower10").text(jt_gl + gl_dw);
+                        $("#spStationDl10").text(jt_rdl + dl_dw);
+                    }
+
+                }
+            }, 'json');
+        }
+
+        function generateRandomNumber(num1, num2) {
+            if (typeof (num1) != "number" || typeof (num2) != "number") {
+                return 0;
+            }
+            var max = num1 - num2 > 0 ? num1 : num2;
+            var min = num1 - num2 < 0 ? num1 : num2;
+            return parseFloat((Math.random() * (max - min) + min).toFixed(2));
+        }
+        ///大地图时，电站雨滴下落显示
+        function initStationToMap() {
+            $('#plant_1_rain').show().animate({ top: 539 }, {
+                duration: 500, easing: 'easeInExpo', complete: function () {
+                    $("#plant_1_light").show().animate({ top: 535, left: 971, opacity: 'hide', width: 47, height: 70 }, 500);
+                    $('#plant_1').show();
+                    $('#plant_1_rain').hide().css({ top: -42 });
+                }
+            });
+            setTimeout(function () {
+                $('#plant_2_rain').show().animate({ top: 573 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_2_light").show().animate({ top: 568, left: 969, opacity: 'hide', width: 47, height: 70 }, 500);
+                        $('#plant_2').show();
+                        $('#plant_2_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 100);
+            setTimeout(function () {
+                $('#plant_3_rain').show().animate({ top: 525 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_3_light").show().animate({ top: 521, left: 982, opacity: 'hide', width: 47, height: 70 }, 500);
+                        $('#plant_3').show();
+                        $('#plant_3_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 200);
+            setTimeout(function () {
+                $('#plant_4_rain').show().animate({ top: 514 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_4_light").show().animate({ top: 508, left: 1037, opacity: 'hide', width: 47, height: 70 }, 500);
+                        $('#plant_4').show();
+                        $('#plant_4_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 300);
+            setTimeout(function () {
+                $('#plant_5_rain').show().animate({ top: 507 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_5_light").show().animate({ top: 503, left: 1045, opacity: 'hide', width: 47, height: 70 }, 500);
+                        $('#plant_5').show();
+                        $('#plant_5_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 400);
+            setTimeout(function () {
+                $('#plant_6_rain').show().animate({ top: 489 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_6_light").show().animate({ top: 484, left: 1049, opacity: 'hide', width: 47, height: 70 }, 500);
+                        $('#plant_6').show();
+                        $('#plant_6_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 500);
+            setTimeout(function () {
+                $('#plant_7_rain').show().animate({ top: 426 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_7_light").show().animate({ top: 421, left: 1108, opacity: 'hide', width: 47, height: 70 }, 500);
+                        $('#plant_7').show();
+                        $('#plant_7_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 600);
+            setTimeout(function () {
+                $('#plant_8_rain').show().animate({ top: 527 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_8_light").show().animate({ top: 522, left: 1100, opacity: 'hide', width: 38, height: 56 }, 500);
+                        $('#plant_8').show();
+                        $('#plant_8_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 700);
+            setTimeout(function () {
+                $('#plant_9_rain').show().animate({ top: 660 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_9_light").show().animate({ top: 655, left: 1048, opacity: 'hide', width: 38, height: 56 }, 500);
+                        $('#plant_9').show();
+                        $('#plant_9_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 800);
+            setTimeout(function () {
+                $('#plant_10_rain').show().animate({ top: 640 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_10_light").show().animate({ top: 635, left: 1109, opacity: 'hide', width: 38, height: 56 }, 500);
+                        $('#plant_10').show();
+                        $('#plant_10_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 900);
+            setTimeout(function () {
+                $('#plant_11_rain').show().animate({ top: 775 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_11_light").show().animate({ top: 770, left: 1179, opacity: 'hide', width: 38, height: 56 }, {
+                            duration: 500, easing: 'easeInExpo', complete: function () {
+                                bindOperate();
+                                //$("#plant_1_name,#plant_2_name,#plant_3_name,#plant_4_name,#plant_5_name,#plant_6_name,#plant_7_name,#plant_8_name,#plant_9_name,#plant_10_name,#plant_11_name").animate({ opacity: 'show' }, 500);
+                            }
+                        });
+                        $('#plant_11').show();
+                        $('#plant_11_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 1200);
+            setTimeout(function () {
+                $('#plant_12_rain').show().animate({ top: 558 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_12_light").show().animate({ top: 553, left: 1114, opacity: 'hide', width: 38, height: 56 }, {
+                            duration: 500, easing: 'easeInExpo', complete: function () {
+                                bindOperate();
+                            }
+                        });
+                        $('#plant_12').show();
+                        $('#plant_12_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 1000);
+            setTimeout(function () {
+                $('#plant_13_rain').show().animate({ top: 973 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_13_light").show().animate({ top: 968, left: 999, opacity: 'hide', width: 38, height: 56 }, {
+                            duration: 500, easing: 'easeInExpo', complete: function () {
+                                bindOperate();
+                            }
+                        });
+                        $('#plant_13').show();
+                        $('#plant_13_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 1500);
+            setTimeout(function () {
+                $('#plant_14_rain').show().animate({ top: 560 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_14_light").show().animate({ top: 555, left: 1058, opacity: 'hide', width: 38, height: 56 }, {
+                            duration: 500, easing: 'easeInExpo', complete: function () {
+                                bindOperate();
+                            }
+                        });
+                        $('#plant_14').show();
+                        $('#plant_14_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 1000);
+            setTimeout(function () { $("#plant_1_name").animate({ left: 976, opacity: 'show' }, 200); }, 1400);
+            setTimeout(function () { $("#plant_2_name").animate({ right: 915, opacity: 'show' }, 200); }, 1500);
+            setTimeout(function () { $("#plant_3_name").animate({ right: 900, opacity: 'show' }, 200); }, 1600);
+            setTimeout(function () { $("#plant_4_name").animate({ right: 845, opacity: 'show' }, 200); }, 1700);
+            setTimeout(function () { $("#plant_5_name").animate({ right: 835, opacity: 'show' }, 200); }, 1800);
+            setTimeout(function () { $("#plant_6_name").animate({ left: 1053, opacity: 'show' }, 200); }, 1900);
+            setTimeout(function () { $("#plant_7_name").animate({ left: 1111, opacity: 'show' }, 200); }, 2000);
+            setTimeout(function () { $("#plant_8_name").animate({ left: 1122, opacity: 'show' }, 200); }, 2100);
+            setTimeout(function () { $("#plant_9_name").animate({ right: 852, opacity: 'show' }, 200); }, 2200);
+            setTimeout(function () { $("#plant_10_name").animate({ left: 1132, opacity: 'show' }, 200); }, 2300);
+            setTimeout(function () { $("#plant_11_name").animate({ left: 1202, opacity: 'show' }, 200); }, 2400);
+            setTimeout(function () { $("#plant_12_name").animate({ left: 1143, opacity: 'show' }, 200); }, 2500);
+            setTimeout(function () { $("#plant_13_name").animate({ left: 1025, opacity: 'show' }, 200); }, 2600);
+            setTimeout(function () { $("#plant_14_name").animate({ left: 1074, opacity: 'show' }, 200); }, 2700);
+
+        }
+        /*Begin:内蒙古地图放大时，显示电站效果*/
+        function showNmgStaion1() {
+            //console.log(1111);
+            $("#nmg_plant1_light").show().animate({ top: 864, left: 790, opacity: 'hide', width: 56, height: 84 }, 500);
+            $('#nmg_plant1').show();
+        }
+        function showNmgStaion2() {
+            $("#nmg_plant2_light").show().animate({ top: 942, left: 795, opacity: 'hide', width: 56, height: 84 }, 500);
+            $('#nmg_plant2').show();
+        }
+        function showNmgStaion3() {
+            $("#nmg_plant3_light").show().animate({ top: 826, left: 837, opacity: 'hide', width: 56, height: 84 }, 500);
+            $('#nmg_plant3').show();
+        }
+        function showNmgStaion4() {
+            $("#nmg_plant4_light").show().animate({ top: 847, left: 953, opacity: 'hide', width: 56, height: 84 }, 500);
+            $('#nmg_plant4').show();
+        }
+        function showNmgStaion5() {
+            $("#nmg_plant5_light").show().animate({ top: 829, left: 966, opacity: 'hide', width: 56, height: 84 }, 500);
+            $('#nmg_plant5').show();
+        }
+        function showNmgStaion6() {
+            $("#nmg_plant6_light").show().animate({ top: 788, left: 978, opacity: 'hide', width: 56, height: 84 }, 500);
+            $('#nmg_plant6').show();
+        }
+        function showNmgStaion7() {
+            $("#nmg_plant7_light").show().animate({ top: 640, left: 1076, opacity: 'hide', width: 56, height: 84 }, 500);
+            $('#nmg_plant7').show();
+        }
+
+
+        /*End:内蒙古地图放大时，显示电站效果*/
+        /*Begin:左侧电量等信息显示动画*/
+        function initInfo1() {
+            $("#info_1").animate({ left: 0, top: 158, opacity: 1 }, { duration: 160, easing: '', complete: function () { initInfo2(); } });
+        }
+        function initInfo2() {
+            $("#info_2").animate({ left: 0, top: 312, opacity: 1 }, { duration: 150, easing: '', complete: function () { initInfo3(); } });
+        }
+        function initInfo3() {
+            $("#info_3").animate({ left: 0, top: 466, opacity: 1 }, { duration: 140, easing: '', complete: function () { initInfo4(); } });
+        }
+        function initInfo4() {
+            $("#info_4").animate({ left: 0, top: 620, opacity: 1 }, { duration: 130, easing: '', complete: function () { initInfo5(); } });
+        }
+        function initInfo5() {
+            $("#info_5").animate({ left: 0, top: 774, opacity: 1 }, { duration: 120, easing: '', complete: function () { initStationToMap();/*加载电站雨滴*/ } });
+        }
+        /*End:左侧电量等信息显示动画*/
+        /*Begin:左侧初始信息隐藏，显示电站信息*/
+        function hideInfoAll() {
+            $(".Group_info").animate({ left: -756, opacity: 0.2 }, { duration: 300, easing: '', complete: function () { } });
+            setTimeout("showStation4();", 600);
+        }
+
+        /*End:左侧初始信息隐藏，显示电站信息*/
+        /*Begin:左侧显示电站信息*/
+        function showStation1() {
+            $("#station_1").animate({ left: -20, opacity: 1 }, { duration: 240, easing: '', complete: function () { showStation2(); } });
+            showNmgStaion1();
+        }
+        function showStation2() {
+            $("#station_2").animate({ left: -20, opacity: 1 }, { duration: 220, easing: '', complete: function () { } });
+            showNmgStaion2();
+        }
+        function showStation3() {
+            $("#station_3").animate({ left: -20, opacity: 1 }, { duration: 200, easing: '', complete: function () { showStation1(); } });
+            showNmgStaion3();
+        }
+        function showStation4() {
+            $("#station_4").animate({ left: -20, opacity: 1 }, { duration: 180, easing: '', complete: function () { showStation5(); } });
+            showNmgStaion4();
+        }
+        function showStation5() {
+            $("#station_5").animate({ left: -20, opacity: 1 }, { duration: 170, easing: '', complete: function () { showStation6(); } });
+            showNmgStaion5();
+        }
+        function showStation6() {
+            $("#station_6").animate({ left: -20, opacity: 1 }, { duration: 160, easing: '', complete: function () { showStation7(); } });
+            showNmgStaion6();
+        }
+        function showStation7() {
+            $("#station_7").animate({ left: -20, opacity: 1 }, { duration: 150, easing: '', complete: function () { showStation3(); } });
+            showNmgStaion7();
+        }
+        /**/
+        function hideStationAll() {
+            $("#station_1,#station_2,#station_3,#station_4,#station_5,#station_6,#station_7").animate({ left: -812, opacity: 0.2 }, { duration: 300, easing: '', complete: function () { /*initInfo1(); setTimeout("initInfo1();", 500);*/ } })
+            setTimeout("initInfo1();", 400);
+        }
+
+        function showElecBarChart(_realdl, _chart) {//MonData
+            $("#chart_bar").highcharts({
+                chart: {
+                    borderWidth: 0,             //图框的边框大小
+                    //margin: [10, 5, 5, 5],
+                    spacingTop: 10,              //图表上方的空白
+                    spacingBottom: 2,
+                    type: 'column',
+                    height: 336,
+                    style: {
+                        fontFamily: "'Unica One', sans-serif"
+                    },
+                    backgroundColor: 'rgba(0,0,0,0)'
+                },
+                title: {
+                    text: '月发电量对比(千万kWh)',
+                    style: {
+                        color: '#a5ffff'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color: '#a5ffff'
+                        }
+                    },
+                    categories: _chart
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '',
+                        style: {
+                            color: '#a5ffff'
+                        }
+                    },
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color: '#a5ffff'
+                        }
+                    }
+                    //labels: {
+                    //    enabled: false
+                    //}
+                },
+                plotOptions: {
+                    series: {
+                        borderColor: ''//去掉棒图的边款
+                    }, column: {
+                        dataLabels: {
+                            enabled: true, // dataLabels设为true
+                            style: {
+                                color: '#D7DEE9',
+                                fontSize: '16px'
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: '发电量 <b>{point.y:.2f} 千万kWh</b>'
+                },
+                series: [{
+                    name: '发电量',
+                    //data: [['一月', 1.94],['二月', 1.59],['三月', 2.90],['四月', 2.39],['五月', 2.23],['六月', 2.35],['七月', 2.51],
+                    //['八月', 2.45],['九月', 2.44],['十月', dlArr[9]],['十一月', dlArr[10]],['十二月', dlArr[11]]]
+                    data: _realdl
+                }]
+            });
+        }
+
+        function showPowerLineChart(_realPower) {
+            var date = new Date();
+            var curYear = date.getFullYear(), curMonth = date.getMonth(), curDay = date.getDate();
+            $("#chart_line").highcharts({
+                chart: {
+                    zoomType: 'x',
+                    height: 346,
+                    width: 380,
+                    spacingLeft: 0,
+                    spacingBottom: 2,
+                    style: {
+                        fontFamily: "'Unica One', sans-serif"
+                    },
+                    backgroundColor: 'rgba(0,0,0,0)'
+                },
+                title: {
+                    text: '实时功率(MW)',
+                    style: {
+                        color: '#a5ffff'
+                    }
+                },
+                xAxis: {
+                    type: 'datetime',
+                    minRange: 20 * 60 * 1000,//
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color: '#a5ffff'
+                        }
+                    },
+                    dateTimeLabelFormats: { // don't display the dummy year
+                        year: '%b',
+                        day: '%m-%e',
+                        hour: '%H:%M'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color: '#a5ffff'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>实时{series.name}</b><br>',
+                    pointFormat: '{point.x:%H:%M} {point.y:.f} MW',
+                    style: {
+                        width: 210
+                    }
+                    //useHTML:true
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                            stops: [
+                                [0, '#01A9E0'],
+                                [1, 'rgba(1,169,224,0.1)']
+                            ]
+                        },
+                        marker: {
+                            radius: 2
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+                series: [{
+                    type: 'area',
+                    name: '功率',
+                    pointInterval: 5 * 60 * 1000,
+                    pointStart: Date.UTC(curYear, curMonth, curDay),//改成年月日","隔开
+                    data: _realPower
+                }]
+            });
+
+        }
+
+        function showReport() {
+            window.parent.showReoprt();
+        }
+
+
+
+        // new
+
+
+        // function ShowSheng_zj() {
+        //     $('#map_China').animate({ "opacity": "0.2" }, 1000);
+        //     $(".plant, .plant_name").hide();
+        //     $("#map_zj").show().animate({ top: 143, left: 510, width: 850, height: 925 }, {
+        //         duration: 1000, easing: '', complete: function () {
+        //             $("#nmg_plant10_light").show().animate({ top: 503, left: 1115, opacity: 'hide', width: 56, height: 84 }, 500);
+        //             $('#nmg_plant10').show();
+        //         }
+        //     });
+        //     //返回全国地图时动画
+        //     $("#map_back").animate({ width: 392 }, {
+        //         duration: 1000, easing: '', complete: function () {
+        //         }
+        //     }).unbind('click').click(function () {
+        //         $("#nmg_plant10").hide();
+        //         $("#map_zj").animate({ top: 183, left: 834, width: 424, height: 435, opacity: 'hide' }, {
+        //             duration: 1000, easing: '', complete: function () {
+        //                 $('#map_China').animate({ opacity: 1 }, 1000);
+        //             }
+        //         });
+        //         $("#map_back").animate({ width: 0 }, {
+        //             duration: 1000, easing: '', complete: function () {
+
+        //             }
+        //         })
+        //         hideStationZJ();
+        //     });
+        //     $(".Group_info").animate({ left: -756, opacity: 0.2 }, {
+        //         duration: 300, easing: '', complete: function () {
+        //             $("#station_10").animate({ left: -20, opacity: 1 }, {
+        //                 duration: 500, easing: '', complete: function () { }
+        //             });
+        //         }
+        //     });
+
+        // }
+        // function hideStationZJ() {
+        //     $("#station_10").animate({ left: -812, opacity: 0.2 }, { duration: 300, easing: '', complete: function () { /*initInfo1(); setTimeout("initInfo1();", 500);*/ } })
+        //     setTimeout("initInfo1();", 400);
+        // }
+
+
+        // function completeGroupPage(_stationId) {
+        //     $("#nmg_plant1,#nmg_plant2,#nmg_plant3,#nmg_plant4,#nmg_plant5,#nmg_plant6,#nmg_plant7,#nmg_plant8,#nmg_plant9,#nmg_plant10").hide();
+        //     $("#map_nmg,#map_bj,#map_hn,#map_zj").animate({ top: 183, left: 834, width: 424, height: 435, opacity: 'hide' }, {
+        //         duration: 1000, easing: '', complete: function () {
+        //         }
+        //     });
+        //     $("#map_back").hide();
+        //     isGotoStation = "1";
+        //     //hideStation2();
+        //     $("#station_1,#station_2,#station_3,#station_4,#station_5,#station_6,#station_7,#station_8,#station_9,#station_10").hide();
+        //     //$("#chart_2").animate({ right: -604 }, 500);
+        //     $("#map_China").animate({ left: 1920, width: 0, height: 0, top: 538 }, {
+        //         duration: 1000, easing: '', complete: function () {
+        //             $("#bg_l").animate({ top: 1075 }, {
+        //                 duration: 1000, easing: '', complete: function () {
+        //                     //bindOperate();
+        //                     window.parent.Page2to3(_stationId);
+        //                 }
+        //             });
+
+        //             $("#bg_r,#bg_c").animate({ top: 1075 }, {
+        //                 duration: 1000, easing: '', complete: function () {
+
+        //                 }
+        //             });
+        //         }
+        //     });
+        // }
+
+        function fromMaptoCity(_stationId) {
+
+            $(".plant, .plant_name").hide();
+            $(".Group_info").animate({ left: -756, opacity: 0.2 }, { duration: 300, easing: '', complete: function () { } });
+            $("#bg_l").animate({ left: 689 }, 1000);
+            $("#bg_r").animate({ right: 689 }, 1000);
+            $("#bg_c").animate({ left: 960, width: 0 }, 1000);
+            $("#title").animate({ top: -126 }, 1000);
+            $("#btn_report").animate({ width: 0 }, 300);
+            $("#chart_1,#chart_2,#chart_line").hide();
+            $("#map_China").animate({left: 1920, width: 0, height: 0, top: 538, opacity: 0.2}, {
+                duration: 1000, easing: '', complete: function () {
+                    $("#bg_l").animate({ top: 1075 }, {
+                        duration: 1000, easing: '', complete: function () {
+                            //bindOperate();
+                            window.parent.Page2to3(_stationId);
+                            // $("#back_d").on("click", GoBack());
+                        }
+                    });
+
+                    $("#bg_r,#bg_c").animate({ top: 1075 }, {
+                        duration: 1000, easing: '', complete: function () {
+
+                        }
+                    });
+                }
+            });
+        }
+
+        $(function(){
+            // 天津站 plant_12
+            $("#plant_12, #plant_tj").on("click", function () {
+                fromMaptoCity("12");
+            });
+            // 山东站 plant_11
+            $("#plant_11, #plant_sd").on("click", function () {
+                fromMaptoCity("11");
+
+            });
+            // 海南站 plant_13
+            $("#plant_13, #plant_hain").on("click", function () {
+                fromMaptoCity("13");
+
+            });
+        });
+
+        // new
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="title" style="top:-126px"></div>
+        <div id="btn_report" style="width:0px;" onclick="showReport()"></div>
+        <div id="bg_l" style="left:689px;top:1075px;"></div>
+        <div id="bg_r" style="right:689px;top:1075px;"></div>
+        <div id="bg_c" style="width:0px;left:960px"></div>
+        <div id="map_China" style="width:0px;left:960px;height:0px;top:538px">
+            <div id="nmg_hover" style="display:none;"></div>
+            <div id="btn_nmg_1"></div>
+            <div id="btn_nmg_2"></div>
+            <div id="btn_nmg_3"></div>
+            <div id="btn_nmg_4"></div>
+            <div id="btn_nmg_5"></div>
+            <div id="btn_nmg_6"></div>
+            <div id="btn_nmg_7"></div>
+            <div id="bj_hover" style="display:none;"></div>
+            <div id="btn_bj_1"></div>
+            <div id="hn_hover" style="display:none;"></div>
+            <div id="btn_hn_1"></div>
+            <div id="btn_hn_2"></div>
+            <div id="zj_hover" style="display:none;"></div>
+            <div id="btn_zj_1"></div>
+        </div>
+        <div id="map_nmg" style="display:none"></div>
+        <div id="map_bj" style="display:none"></div>
+        <div id="map_hn" style="display:none"></div>
+        <div id="map_zj" style="display:none"></div>
+        <div id="map_sd" style="display:none"></div>
+        <div id="map_back">全国地图</div>
+        <div id="plant_cursor">
+            <div class="cursor_1"></div>
+            <div class="cursor_2"></div>
+        </div>
+        <div id="info_1" class="Group_info" style="left:-565px;top:158px;opacity:0.2">
+            <div class="info_text_title"><span>实时总功率</span></div>
+            <div class="info_text_value"><span id="realPower"></span></div>
+            <div class="info_text_unit"><span id="dw_gl"></span></div>
+        </div>
+        <div id="info_2" class="Group_info" style="left:-565px;top:312px;opacity:0.2">
+            <div class="info_text_title"><span>总装机容量</span></div>
+            <div class="info_text_value"><span id="realrl"></span></div>
+            <div class="info_text_unit"><span id="dw_rl"></span></div>
+        </div>
+        <div id="info_3" class="Group_info" style="left:-565px;top:466px;opacity:0.2">
+            <div class="info_text_title"><span>日总发电量</span></div>
+            <div class="info_text_value"><span id="spDayDl"></span></div>
+            <div class="info_text_unit"><span id="dw_rf"></span></div>
+        </div>
+        <div id="info_4" class="Group_info" style="left:-565px;top:620px;opacity:0.2">
+            <div class="info_text_title"><span>年总发电量</span></div>
+            <div class="info_text_value"><span id="spYearDl"></span></div>
+            <div class="info_text_unit"><span id="dw_nf"></span></div>
+        </div>
+        <div id="info_5" class="Group_info" style="left:-565px;top:774px;opacity:0.2">
+            <div class="info_text_title"><span>累计发电量</span></div>
+            <div class="info_text_value"><span id="spLJDl"></span></div>
+            <div class="info_text_unit"><span id="dw_lj"></span></div>
+        </div>
+        <div id="station_8" class="station_title" style="top:134px;left:-600px;opacity:0.2;width:700px;" data-id="8">
+            <div class="st_title" style="width:220px;">北汽先进分布式电站</div>
+            <div class="st_fh">功率：<span id="spStationPower8"></span></div>
+            <div class="st_fh">日电量：<span id="spStationDl8"></span></div>
+        </div>
+        <div id="station_9" class="station_title" style="top:134px;left:-600px;opacity:0.2;width:700px;" data-id="9">
+            <div class="st_title" style="width:220px;">巩义扶贫光伏电站</div>
+            <div class="st_fh">功率：<span id="spStationPower9"></span></div>
+            <div class="st_fh">日电量：<span id="spStationDl9"></span></div>
+        </div>
+        <div id="station_10" class="station_title" style="top:134px;left:-650px;opacity:0.2;width:770px;" data-id="10">
+            <div class="st_title" style="width:290px;">中美象山先进技术示范电站</div>
+            <div class="st_fh">功率：<span id="spStationPower10"></span></div>
+            <div class="st_fh">日电量：<span id="spStationDl10"></span></div>
+        </div>
+        <div id="station_4" class="station_title" style="top:134px;left:-560px;opacity:0.2" data-id="1">
+            <div class="st_title">巴音光伏电站</div>
+            <div class="st_fh">功率：<span id="spStationPower1"></span></div>
+            <div class="st_fh">日电量：<span id="spStationDl1"></span></div>
+        </div>
+        <div id="station_5" class="station_title" style="top:242px;left:-560px;opacity:0.2" data-id="2">
+            <div class="st_title">九十九泉光伏电站</div>
+            <div class="st_fh">功率：<span id="spStationPower2"></span></div>
+            <div class="st_fh">日电量：<span id="spStationDl2"></span></div>
+        </div>
+        <div id="station_6" class="station_title" style="top:350px;left:-560px;opacity:0.2" data-id="3">
+            <div class="st_title">红牧光伏电站</div>
+            <div class="st_fh">功率：<span id="spStationPower3"></span></div>
+            <div class="st_fh">日电量：<span id="spStationDl3"></span></div>
+        </div>
+        <div id="station_7" class="station_title" style="top:458px;left:-560px;opacity:0.2" data-id="4">
+            <div class="st_title">胜利光伏电站</div>
+            <div class="st_fh">功率：<span id="spStationPower4"></span></div>
+            <div class="st_fh">日电量：<span id="spStationDl4"></span></div>
+        </div>
+        <div id="station_3" class="station_title" style="top:566px;left:-560px;opacity:0.2" data-id="5">
+            <div class="st_title">乌拉特光伏电站</div>
+            <div class="st_fh">功率：<span id="spStationPower5"></span></div>
+            <div class="st_fh">日电量：<span id="spStationDl5"></span></div>
+        </div>
+        <div id="station_1" class="station_title" style="top:673px;left:-560px;opacity:0.2" data-id="6">
+            <div class="st_title">巴拉贡光伏电站</div>
+            <div class="st_fh">功率：<span id="spStationPower6"></span></div>
+            <div class="st_fh">日电量：<span id="spStationDl6"></span></div>
+        </div>
+        <div id="station_2" class="station_title" style="top:781px;left:-560px;opacity:0.2" data-id="7">
+            <div class="st_title">润博光伏电站</div>
+            <div class="st_fh">功率：<span id="spStationPower7"></span></div>
+            <div class="st_fh">日电量：<span id="spStationDl7"></span></div>
+        </div>
+
+
+        <div id="chart_1" class="chart_frame" style="top:158px;right:-636px;">
+            <div class="chart_bg"></div>
+            <div class="chart_title"><div class="chart_title_dv">功率曲线</div></div>
+        </div>
+        <div id="chart_line"></div>
+        <div id="chart_2" class="chart_frame" style="top:557px;right:-636px;">
+            <div class="chart_bg"><div id="chart_bar"></div></div>
+            <div class="chart_title"><div class="chart_title_dv">电量对比</div></div>
+        </div>
+        <div id="plant_1_light" class="plant_group" style="top:552px;left:985px;display:none;"></div>
+        <div id="plant_1" class="plant plant_group" style="top:552px;left:985px;display:none;"></div>
+        <div id="plant_1_rain" class="plant_group_rain" style="left:987px;"></div>
+
+        <div id="plant_2_light" class="plant_group" style="top:585px;left:987px;display:none;"></div>
+        <div id="plant_2" class="plant plant_group" style="top:585px;left:987px;display:none;"></div>
+        <div id="plant_2_rain" class="plant_group_rain" style="left:989px;"></div>
+
+        <div id="plant_3_light" class="plant_group" style="top:538px;left:998px;display:none;"></div>
+        <div id="plant_3" class="plant plant_group" style="top:538px;left:998px;display:none;"></div>
+        <div id="plant_3_rain" class="plant_group_rain" style="left:1000px;"></div>
+
+        <div id="plant_4_light" class="plant_group" style="top:526px;left:1053px;display:none;"></div>
+        <div id="plant_4" class="plant plant_group" style="top:526px;left:1053px;display:none;"></div>
+        <div id="plant_4_rain" class="plant_group_rain" style="left:1055px;"></div>
+
+        <div id="plant_5_light" class="plant_group" style="top:519px;left:1061px;display:none;"></div>
+        <div id="plant_5" class="plant plant_group" style="top:519px;left:1061px;display:none;"></div>
+        <div id="plant_5_rain" class="plant_group_rain" style="left:1063px;"></div>
+
+        <div id="plant_6_light" class="plant_group" style="top:501px;left:1065px;display:none;"></div>
+        <div id="plant_6" class="plant plant_group" style="top:501px;left:1065px;display:none;"></div>
+        <div id="plant_6_rain" class="plant_group_rain" style="left:1067px;"></div>
+
+        <div id="plant_7_light" class="plant_group" style="top:438px;left:1124px;display:none;"></div>
+        <div id="plant_7" class="plant plant_group" style="top:438px;left:1124px;display:none;"></div>
+        <div id="plant_7_rain" class="plant_group_rain" style="left:1126px;"></div>
+
+        <div id="plant_8_light" class="plant_group" style="top:539px;left:1116px;display:none;"></div>
+        <div id="plant_8" class="plant plant_group" style="top:539px;left:1116px;display:none;"></div>
+        <div id="plant_8_rain" class="plant_group_rain" style="left:1118px;"></div>
+
+        <div id="plant_9_light" class="plant_group_light" style="top:672px;left:1064px;display:none;"></div>
+        <div id="plant_9" class="plant plant_group" style="top:672px;left:1064px;display:none;"></div>
+        <div id="plant_9_rain" class="plant_group_rain" style="left:1066px;"></div>
+
+        <div id="plant_10_light" class="plant_group_light" style="top:652px;left:1125px;display:none;"></div>
+        <div id="plant_10" class="plant plant_group" style="top:652px;left:1125px;display:none;"></div>
+        <div id="plant_10_rain" class="plant_group_rain" style="left:1127px;"></div>
+
+        <div id="plant_11_light" class="plant_group" style="top:787px;left:1195px;display:none;"></div>
+        <div id="plant_11" class="plant plant_group" style="top:787px;left:1195px;display:none;"></div>
+        <div id="plant_11_rain" class="plant_group_rain" style="left:1197px;"></div>
+        <div id="plant_12_light" class="plant_group" style="top:570px;left:1130px;display:none;"></div>
+        <!--mark-->
+        <div id="plant_12" class="plant plant_group" style="top:570px;left:1130px;display:none;"></div>
+        <!--mark-->
+        <div id="plant_12_rain" class="plant_group_rain" style="left:1132px;"></div>
+
+        <div id="plant_13_light" class="plant_group" style="top:990px;left:1015px;display:none;"></div>
+        <div id="plant_13" class="plant plant_group" style="top:990px;left:1015px;display:none;"></div>
+        <div id="plant_13_rain" class="plant_group_rain" style="left:1017px;"></div>
+
+        <div id="plant_14_light" class="plant_group" style="top:572px;left:1074px;display:none;"></div>
+        <div id="plant_14" class="plant plant_group" style="top:572px;left:1074px;display:none;"></div>
+        <div id="plant_14_rain" class="plant_group_rain" style="left:1076px;"></div>
+
+        <div id="plant_1_name" class="plant_name plant_group_name_tl" style="top:600px;left:1076px;"><div class="plant_group_name_text">润博光伏电站<br>容量:33MW</div></div>
+        <div id="plant_2_name" class="plant_name plant_group_name_tr" style="top:568px;right:1015px;"><div class="plant_group_name_text" style="margin-left:10px;">巴拉贡光伏电站<br>容量:10MW</div></div>
+        <div id="plant_3_name" class="plant_name plant_group_name_br" style="top:494px;right:1000px;"><div class="plant_group_name_text" style="margin-left:10px;">乌拉特光伏电站<br>容量:20MW</div></div>
+        <div id="plant_4_name" class="plant_name plant_group_name_tr" style="top:546px;right:745px;width:100px;"><div class="plant_group_name_text" style="margin-left:10px;">巴音光伏电站<br>容量:35MW</div></div>
+        <div id="plant_5_name" class="plant_name plant_group_name_br" style="top:472px;right:935px;"><div class="plant_group_name_text" style="margin-left:10px;">九十九泉光伏电站<br>容量:20MW</div></div>
+        <div id="plant_6_name" class="plant_name plant_group_name_bl" style="top:456px;left:1153px;"><div class="plant_group_name_text" style="margin-left:15px;">红牧光伏电站<br>容量:30MW</div></div>
+        <div id="plant_7_name" class="plant_name plant_group_name_bl" style="top:393px;left:1211px;"><div class="plant_group_name_text" style="margin-left:15px;">胜利光伏电站<br>容量:20MW</div></div>
+        <div id="plant_8_name" class="plant_name plant_group_name" style="top:494px;left:1222px;"><div class="plant_group_name_bl_2"></div><div class="plant_group_name_r" style="width:110px;"></div><div class="plant_group_name_text_2" style="width:120px;left:15px;">北汽先进分布式电站<br>容量:7.2MW</div></div>
+        <div id="plant_9_name" class="plant_name plant_group_name" style="top:684px;right:952px;"><div class="plant_group_name_tr_2"></div><div class="plant_group_name_l" style="width:110px;"></div><div class="plant_group_name_text_2" style="width:120px;right:8px;">巩义扶贫光伏电站<br>容量:40MW</div></div>
+        <div id="plant_10_name" class="plant_name plant_group_name" style="top:798px;left:1302px;"><div class="plant_group_name_tl_2"></div><div class="plant_group_name_r" style="width:140px;"></div><div class="plant_group_name_text_2" style="width:150px;left:15px;">中美象山先进技术示范电站<br>容量:25MW</div></div>
+        
+        <div id="plant_11_name" class="plant_name plant_group_name" style="top:666px;left:1232px;">
+            <div class="plant_group_name_tl_2"></div>
+            <div class="plant_group_name_r" style="width:110px;"></div>
+            <div id = "plant_sd" class="plant_group_name_text_2" style="width:120px;left:15px;">孔府电站<br>容量:5.8MW</div>
+        </div>
+        
+        <!--mark-->
+        <div id="plant_12_name" class="plant_name plant_group_name" style="top:582px;left:1043px;">
+            <div class="plant_group_name_tl_2"></div>
+            <div class="plant_group_name_r" style="width:140px;"></div>
+            <div id = "plant_tj" class="plant_group_name_text_2" style="width:150px;left:15px;">天津中际分布式电站<br>容量:8MW</div>
+        </div>
+        <!--mark-->
+        <div id="plant_13_name" class="plant_name plant_group_name" style="top:942px;left:925px;">
+            <div class="plant_group_name_bl_2"></div><div class="plant_group_name_r" style="width:140px;"></div>
+            <div id = "plant_hain" class="plant_group_name_text_2" style="width:150px;left:15px;">海南澄迈大拉分布式电站<br>容量:1MW</div>
+        </div>
+        <div id="plant_14_name" class="plant_name plant_group_name" style="top:586px;left:974px;"><div class="plant_group_name_tl_2"></div><div class="plant_group_name_r" style="width:90px;"></div><div class="plant_group_name_text_2" style="width:100px;left:15px;">阜平麻棚光伏电站<br>容量:30MW</div></div>
+        <div id="nmg_plant1_light" class="plant_group" style="display:none;top:885px;left:805px;"></div>
+        <div id="nmg_plant1" class="plant_group" style="display:none;top:885px;left:805px;"></div>
+
+        <div id="nmg_plant2_light" class="plant_group" style="display:none;top:963px;left:810px;"></div>
+        <div id="nmg_plant2" class="plant_group" style="display:none;top:963px;left:810px;"></div>
+
+        <div id="nmg_plant3_light" class="plant_group" style="display:none;top:847px;left:852px;"></div>
+        <div id="nmg_plant3" class="plant_group" style="display:none;top:847px;left:852px;"></div>
+
+        <div id="nmg_plant4_light" class="plant_group" style="display:none;top:868px;left:968px;"></div>
+        <div id="nmg_plant4" class="plant_group" style="display:none;top:868px;left:968px;"></div>
+
+        <div id="nmg_plant5_light" class="plant_group" style="display:none;top:850px;left:981px;"></div>
+        <div id="nmg_plant5" class="plant_group" style="display:none;top:850px;left:981px;"></div>
+
+        <div id="nmg_plant6_light" class="plant_group" style="display:none;top:809px;left:993px;"></div>
+        <div id="nmg_plant6" class="plant_group" style="display:none;top:809px;left:993px;"></div>
+
+        <div id="nmg_plant7_light" class="plant_group" style="display:none;top:661px;left:1091px;"></div>
+        <div id="nmg_plant7" class="plant_group" style="display:none;top:661px;left:1091px;"></div>
+        <!--8:北汽-->
+        <div id="nmg_plant8_light" class="plant_group" style="display:none;top:501px;left:921px;"></div>
+        <div id="nmg_plant8" class="plant_group" style="display:none;top:501px;left:921px;"></div>
+        <!--9:巩义-->
+        <div id="nmg_plant9_light" class="plant_group" style="display:none;top:465px;left:891px;"></div>
+        <div id="nmg_plant9" class="plant_group" style="display:none;top:465px;left:891px;"></div>
+        <!--10:象山-->
+        <div id="nmg_plant10_light" class="plant_group" style="display:none;top:521px;left:1130px;"></div>
+        <div id="nmg_plant10" class="plant_group" style="display:none;top:521px;left:1130px;"></div>
+        <!--<div id="plant_cursor"></div>-->
+    </div>
+</body>
+</html>
