@@ -56,27 +56,37 @@ filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')
 .btn_time_active{background-image: url(../img/Report/btn_time_active.png); color:#fff;}
 
 .table_wrap {
-  width:2400px;height:950px;
+  width: 1800px;
+  height: 950px;
+  position: absolute;
+  top: 10px;
+  margin: auto;
   margin-top: 123px;
-  margin-left: -400px;
+  left: 40px;
   overflow-x: auto; 
   overflow-y: hidden;
+  z-index: 10;
 }
 .table{
 	/*position:absolute;top:123px;/*left: -398px;*/
   width: 2710px;
+  margin-left: -447px;
+  position: relative;
+  /*top: -130px;*/
 }
 .table_top{
 	/*width:100%;*/
   height:65px;
-	background-image:url(../img/Report/bg_table_title.png);
-  background-repeat:no-repeat
+	
 }
+
 .table_top_td{float:left;height:65px;line-height:68px;color:#fff;text-align:center;font-size:24px;}
 .table_middle{
 	/*width:100%;*/
   /*width: 2710px;*/
-  height:790px;background:url(../img/Report/bg_table_content.png)  repeat-x;overflow-y:auto;overflow-x:hidden;
+  height:790px;
+  /*overflow-y:auto;*/
+  /*overflow-x:visible;*/
 }
 #dv_table  tr{
  color:#44b8e9;
@@ -96,8 +106,37 @@ filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')
 }
 
 .table_bottom{
-	width:100%;height:65px;
-	background-image:url(../img/Report/bg_table_heji.png);
+  width:100%;height:65px;
+
+	
+}
+.table_top_wrap {
+  position: relative;
+  top: 130px;
+  left: 40px;
+  height:65px;
+  width: 100%;
+  background-image:url(../img/Report/bg_table_title.png);
+  background-repeat:no-repeat;
+  z-index: 0;
+}
+.table_middle_wrap {
+  position: relative;
+  left: 40px;
+  top: 130px;
+  width: 1800px;
+  height:790px;
+  background:url(../img/Report/bg_table_content.png)  repeat-x;
+  z-index: 0;
+}
+.table_bottom_wrap {
+  position: relative;
+  top: 130px;
+  left: 40px;
+  width:100%;height:65px;
+  background-image:url(../img/Report/bg_table_heji.png);
+  background-repeat: no-repeat;
+  z-index: 0;
 }
 
 ::-webkit-scrollbar {  

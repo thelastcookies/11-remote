@@ -40,6 +40,7 @@
             $("#dv_table").empty();
             var _Time;
             var _arrHeji = new Array();
+            var _tableLen = 0;
             //alert(sData.length);
             if (_tableType == "month" || _tableType == "day") //月电量报表
             {
@@ -204,6 +205,7 @@ st_name = sData[0].stationName;
                              }
                          }
                         _len = 100/(4 + 3 * arr.length);
+                        _tableLen = 250 + 209 * arr.length;
                         string_top="<table height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:" + _tableLen + "px\"><tbody><tr>";
                         string_top +="<td class=\"table_top_td\" style=\"width:" + 4 * _len + "%\">时间</td>";
 
@@ -246,6 +248,7 @@ st_name = sData[0].stationName;
                     }
                     mycars[st_num] = st_data.trim(' ');
 
+                    var _htmlString = "<table style=\"width:" + _tableLen + "px\" height='100%' border='0' cellpadding='0' cellspacing='0'>";
 
                     if (dDate.getFullYear() == _Time) {//如果是本年
                         for (var j = 1; j <= dDate.getMonth() + 1; j++) {//循环每个月
@@ -308,7 +311,13 @@ st_name = sData[0].stationName;
 
                     }
                     $("#td_bottom").html(string_bottom);
+
+                    // workaround 针对 dv_table 长度总是异常的处理方法
+                    
+                    $("#dv_table").css('width', _tableLen);
+
                     setlocation();
+ 
                 }, 'json');
 
 
@@ -324,11 +333,15 @@ st_name = sData[0].stationName;
         function setlocation() {
             $(".table_middle").scrollTop(0);
             var _h = $('#dv_table').height();
-            var _hl = $('.td_highlight').position().top;
+            try {
+                var _hl = $('.td_highlight').position().top;
+                $(".table_middle").animate({ scrollTop: _hl - 365 }, 1000);
+            }catch(err) {
+                console.log ('$(".td_highlight") 不存在');
+            }
             //alert(_h);
             //$(".table_middle").stop(true);
             //alert(_hl+","+(_hl-365));
-            $(".table_middle").animate({ scrollTop: _hl - 365 }, 1000);
             //alert($('.td_highlight').position().top);
         }
         function selectType(_type) {
@@ -363,6 +376,12 @@ st_name = sData[0].stationName;
         <div id="btn_day" class="btn_time_active" style="left:870px" onclick="selectType('day')">日电量</div>
         <div id="btn_month" class="btn_time" style="left:1018px" onclick="selectType('month')">月电量</div>
         <div id="btn_year" class="btn_time" style="left:1166px" onclick="selectType('year')">年电量</div>
+        <div class="table_top_wrap">
+        </div>
+        <div class = "table_middle_wrap">
+        </div>
+        <div class = "table_bottom_wrap">
+        </div>
         <div class = "table_wrap">
             <div class="table">
                 <div class="table_top">
