@@ -74,23 +74,22 @@
                     var _day=1;
                     if (sData.length > 0) {
                         st_name = sData[0].stationName;
-
-                        string_top = "<table height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:2710px;\"><tbody><tr>";
-                        string_top += "<td class=\"table_top_td\" style=\"width:10%\">时间</td>";
-			arr.push(st_name);
-
                         for (var k = 0; k < sData.length; k++) {
                             if (st_name != sData[k].stationName) {
                                 st_name = sData[k].stationName;
                                  arr.push(st_name);
                             }
                         }
-                        _len = 87.3 / arr.length;
+                        arr.push(st_name);
+                        _len = 100/(4 + 3 * arr.length);
+
+                        string_top = "<table height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:2710px;\"><tbody><tr>";
+                        string_top += "<td class=\"table_top_td\" style=\"width:" + 4 * _len + "%\">时间</td>";
 			_arrHeji = new Array(arr.length);
                         for (var t = 0; t < arr.length; t++) {
 _arrHeji[t] =0;
                             // string_top += "<td class=\"table_top_td\" style=\"width:" + _len + "%\">" + arr[t] + "（kWh）</td>";
-                            string_top += "<td class=\"table_top_td\" style=\"width:7.5%\">" + arr[t] + "（kWh）</td>";
+                            string_top += "<td class=\"table_top_td\" style=\"width:" + 3 * _len + "%\">" + arr[t] + "（kWh）</td>";
 
                         }
                         string_top += "</tr></tbody></table>";
@@ -124,10 +123,10 @@ st_name = sData[0].stationName;
                     mycars[st_num] = st_data.trim(' ');
                     for (var i = 1; i <= count_time; i++) {//循环该月的天数
                         if (_Time + "-" + ("000" + i).substr(-2) == $("#day_input").val() && _tableType == "day") {
-                            _htmlString += "<tr><td class='td_highlight' width='10%'>" + _Time + "-" + ("000" + i).substr(-2) + "</td>";
+                            _htmlString += "<tr><td class='td_highlight' width='" + 4 * _len + "%'>" + _Time + "-" + ("000" + i).substr(-2) + "</td>";
                         }
                         else {
-                            _htmlString += "<tr><td width='10%'>" + _Time + "-" + ("000" + i).substr(-2) + "</td>";
+                            _htmlString += "<tr><td width='" + 4 * _len + "%'>" + _Time + "-" + ("000" + i).substr(-2) + "</td>";
                         }
                         for (var t = 0; t < mycars.length; t++) {//循环电站
                             var re_data = parseFloat(mycars[t].split(' ')[i - 1]).toFixed(2);
@@ -137,10 +136,10 @@ st_name = sData[0].stationName;
 
 
                             if (_Time + "-" + ("000" + i).substr(-2) == $("#day_input").val() && _tableType == "day") {
-                                _htmlString += "<td  class='td_highlight' width='7.5%'>" + re_data + "</td>";
+                                _htmlString += "<td  class='td_highlight' width='" + 3 * _len + "%'>" + re_data + "</td>";
                             }
                             else {
-                                _htmlString += "<td width='7.5%'>" + re_data + "</td>";
+                                _htmlString += "<td width='" + 3 * _len + "%'>" + re_data + "</td>";
                             }
                             re_data = parseFloat(mycars[t].split(' ')[i - 1]);
                             if (isNaN(re_data) || re_data<0) {
@@ -153,11 +152,16 @@ st_name = sData[0].stationName;
                     _htmlString += "</table>";
                     //alert(_htmlString);
                     $("#dv_table").html(_htmlString);
-                    var string_bottom = "<div class=\"table_top_td\" style=\"width:10%\">合计</div>";
+                    var string_bottom = "<table height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:2710px;\"><tbody><tr>";
+
+                    string_bottom += "<td class=\"table_top_td\" style=\"width:" + 4 * _len + "%\">合计</td>";
+                    // string_bottom += "<td class=\"table_top_td\" style=\"width:10%\">合计</td>";
+
 
                     for (var u = 0; u < _arrHeji.length; u++) {
                         // string_bottom += "<div class=\"table_top_td\" style=\"width:" + _len + "%\"><span>" + _arrHeji[u].toFixed(2) + "</span></div>";
-                        string_bottom += "<div class=\"table_top_td\" style=\"width:7.5%\"><span>" + _arrHeji[u].toFixed(2) + "</span></div>";
+                        string_bottom += "<td class=\"table_top_td\" style=\"width:" + 3 * _len + "%\">" + _arrHeji[u].toFixed(2) + "</td>";
+                        // string_bottom += "<td class=\"table_top_td\" style=\"width:7.5%\">" + _arrHeji[u].toFixed(2) + "</td>";
 
 
                     }
@@ -170,7 +174,7 @@ st_name = sData[0].stationName;
                 if (dDate.getFullYear() == _Time) {//如果是本年
                     count_time = dDate.getMonth() + 1;
                 } else {
-                    count_time = 10;
+                    count_time = 12;
                 }
 
 
@@ -186,8 +190,6 @@ st_name = sData[0].stationName;
                     var string_top="";
                     if (sData.length > 0) {
                         st_name = sData[0].stationName;
-                         string_top="<table height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:2710px;\"><tbody><tr>";
-                         string_top +="<td class=\"table_top_td\" style=\"width:10%\">时间</td>";
                          arr.push(st_name);
                          for (var k = 0; k < sData.length; k++) {
                              if (st_name != sData[k].stationName) {
@@ -195,14 +197,16 @@ st_name = sData[0].stationName;
                                  arr.push(st_name);
                              }
                          }
-                          _len = 87.3/arr.length;
+                        _len = 100/(4 + 3 * arr.length);
+                        string_top="<table height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:2710px;\"><tbody><tr>";
+                        string_top +="<td class=\"table_top_td\" style=\"width:" + 4 * _len + "%\">时间</td>";
 			  _arrHeji = new Array(arr.length);
 
                          for(var t=0;t<arr.length;t++)
                          {   
                              _arrHeji[t] =0;
-                             // string_top +="<td class=\"table_top_td\" style=\"width:"+_len+"%\">"+arr[t]+"（kWh）</td>";
-                             string_top +="<td class=\"table_top_td\" style=\"width:7.5%\">"+arr[t]+"（kWh）</td>";
+                             string_top +="<td class=\"table_top_td\" style=\"width:" + 3 * _len + "%\">"+arr[t]+"（kWh）</td>";
+                             // string_top +="<td class=\"table_top_td\" style=\"width:7.5%\">"+arr[t]+"（kWh）</td>";
 
                          }
                          string_top +="</tr></tbody></table>"; 
@@ -238,7 +242,7 @@ st_name = sData[0].stationName;
 
                     if (dDate.getFullYear() == _Time) {//如果是本年
                         for (var j = 1; j <= dDate.getMonth() + 1; j++) {//循环每个月
-                            _htmlString += "<tr><td width='10%'>" + dDate.getFullYear() + "-" + ("000" + j).substr(-2) + "</td>";
+                            _htmlString += "<tr><td width='" + 4 * _len + "%'>" + dDate.getFullYear() + "-" + ("000" + j).substr(-2) + "</td>";
                             for (var t = 0; t < mycars.length; t++) {//循环电站
                                 var re_data = parseFloat(mycars[t].split(' ')[j - 1]).toFixed(2);
                                 if (isNaN(re_data) || re_data<0) {
@@ -246,9 +250,9 @@ st_name = sData[0].stationName;
                                 }
 
                                 if (_Time + "-" + ("000" + j).substr(-2) == $("#day_input").val() && _tableType == "day") {
-                                    _htmlString += "<td  class='td_highlight' width='7.5%'>" + re_data + "</td>";
+                                    _htmlString += "<td  class='td_highlight' width='" + 3 * _len + "%'>" + re_data + "</td>";
                                 }
-                                _htmlString += "<td width='7.5%'>" + re_data + "</td>";
+                                _htmlString += "<td width='" + 3 * _len + "%'>" + re_data + "</td>";
 
                                 re_data = parseFloat(mycars[t].split(' ')[j - 1]);
                                 if (isNaN(re_data) || re_data<0) {
@@ -261,14 +265,14 @@ st_name = sData[0].stationName;
                         }
                     }
                     else {//如果不是本年
-                        for (var j = 1; j <= 10; j++) {//循环每个月
-                            _htmlString += "<tr><td width='7.5%'>" + _Time + "-" + ("000" + j).substr(-2) + "</td>";
+                        for (var j = 1; j <= mycars[0].split(' ').length; j++) {//循环每个月
+                            _htmlString += "<tr><td width='" + 4 * _len + "%'>" + _Time + "-" + ("000" + j).substr(-2) + "</td>";
                             for (var t = 0; t < mycars.length; t++) {//循环电站
                                 var re_data = parseFloat(mycars[t].split(' ')[j - 1]).toFixed(2);
                                 if (isNaN(re_data) || re_data<0) {
                                     re_data = 0;
                                 }
-                                _htmlString += "<td width='7.5%'>" + re_data + "</td>";
+                                _htmlString += "<td width='" + 3 * _len + "%'>" + re_data + "</td>";
                                 re_data = parseFloat(mycars[t].split(' ')[j - 1]);
                                 if (isNaN(re_data) || re_data<0) {
                                     re_data = 0;
@@ -282,13 +286,18 @@ st_name = sData[0].stationName;
 
                     _htmlString += "</table>";
                     $("#dv_table").html(_htmlString);
-                    var  string_bottom="<div class=\"table_top_td\" style=\"width:10%\">合计</div>";
-                    
-                    for (var u = 0; u < _arrHeji.length; u++) {
-                        // string_bottom += "<div class=\"table_top_td\" style=\"width:" + _len + "%\"><span>" + _arrHeji[u].toFixed(2) + "</span></div>";
-                        string_bottom += "<div class=\"table_top_td\" style=\"width:7.5%\"><span>" + _arrHeji[u].toFixed(2) + "</span></div>";
 
-                        
+                    var string_bottom = "<table height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:2710px;\"><tbody><tr>";
+
+                    string_bottom += "<td class=\"table_top_td\" style=\"width:" + 4 * _len + "%\">合计</td>";
+                    // string_bottom += "<td class=\"table_top_td\" style=\"width:10%\">合计</td>";
+
+
+                    for (var u = 0; u < _arrHeji.length; u++) {
+                        string_bottom += "<td class=\"table_top_td\" style=\"width:" + 3 * _len + "%\">" + _arrHeji[u].toFixed(2) + "</td>";
+                        // string_bottom += "<td class=\"table_top_td\" style=\"width:7.5%\">" + _arrHeji[u].toFixed(2) + "</td>";
+
+
                     }
                     $("#td_bottom").html(string_bottom);
                     setlocation();
@@ -346,16 +355,17 @@ st_name = sData[0].stationName;
         <div id="btn_day" class="btn_time_active" style="left:870px" onclick="selectType('day')">日电量</div>
         <div id="btn_month" class="btn_time" style="left:1018px" onclick="selectType('month')">月电量</div>
         <div id="btn_year" class="btn_time" style="left:1166px" onclick="selectType('year')">年电量</div>
-        <div class="table">
-            <div class="table_top">
-                <div id="td_top"></div>
-            </div>
-            <div class="table_middle">
-                <div id="dv_table"></div>
-            </div>
-            <div class="table_bottom">
-                <div id="td_bottom"></div>
-                
+        <div class = "table_wrap">
+            <div class="table">
+                <div class="table_top">
+                    <div id="td_top"></div>
+                </div>
+                <div class="table_middle">
+                    <div id="dv_table"></div>
+                </div>
+                <div class="table_bottom">
+                    <div id="td_bottom"></div>
+                </div>
             </div>
         </div>
     </div>

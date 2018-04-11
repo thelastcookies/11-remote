@@ -185,7 +185,7 @@
             else if (_ShengId == "bj") { ShowSheng_bj(); }
             else if (_ShengId == "hn") { ShowSheng_hn(); }
             else if (_ShengId == "zj") { ShowSheng_zj(); }
-            else if (_ShengId == "tj" || _ShengId == "sd" || _ShengId == "hain") {
+            else if (_ShengId == "tj" || _ShengId == "sd" || _ShengId == "hain" || _ShengId == "js") { // 省
                 setTimeout("initInfo1()", 2000);
             }
                 /////////
@@ -223,9 +223,10 @@
             return this.reduce(function (t, s) { return t + s }, 0);
         }
         function ShowSheng_nmg() {
+            $('#noTouch').show();
             $('#map_China').animate({ "opacity": "0.2" }, 1000);
             $("#plant_1,#plant_2,#plant_3,#plant_4,#plant_5,#plant_6,#plant_7,#plant_8,#plant_9,#plant_10,#plant_11,#plant_12,#plant_13,#plant_14").hide();
-            $("#plant_1_name,#plant_2_name,#plant_3_name,#plant_4_name,#plant_5_name,#plant_6_name,#plant_7_name,#plant_8_name,#plant_9_name,#plant_10_name,#plant_11_name,#plant_12_name,#plant_13_name,#plant_14_name").hide();
+            $("#plant_1_name,#plant_2_name,#plant_3_name,#plant_4_name,#plant_5_name,#plant_6_name,#plant_7_name,#plant_8_name,#plant_9_name,#plant_10_name,#plant_11_name,#plant_12_name,#plant_13_name,#plant_14_name,#plant_15_name,#plant_16_name").hide();
             $("#plant_1_name").css("left", "1076px");
             $("#plant_2_name").css("right", "1015px");
             $("#plant_3_name").css("right", "1000px");
@@ -237,11 +238,15 @@
             $("#plant_9_name").css("right", "952px");
             $("#plant_10_name").css("left", "1232px");
             $("#plant_11_name").css("left", "1302px");
-	    $("#plant_12_name").css("left", "1043px");
+	        $("#plant_12_name").css("left", "1043px");
             $("#plant_13_name").css("left", "925px");
             $("#plant_14_name").css("left", "974px");
+            $("#plant_15_name").css("left", "1160px");//name-left
+            $("#plant_16_name").css("left", "1163px");
+
             $("#map_nmg").show().animate({ top: 143, left: 510, width: 850, height: 925 }, {
                 duration: 1000, easing: '', complete: function () {
+                    //$('#noTouch').hide();
                 }
             });
             //返回全国地图时动画
@@ -264,6 +269,7 @@
             hideInfoAll();
         }
         function ShowSheng_bj() {
+            //$('#noTouch').show();
             $('#map_China').animate({ "opacity": "0.2" }, 1000);
             $(".plant, .plant_name").hide();
             $("#map_bj").show().animate({ top: 343, left: 710, width: 389, height: 412 }, {
@@ -307,6 +313,7 @@
             setTimeout("initInfo1();", 400);
         }
         function ShowSheng_hn() {
+            //$('#noTouch').show();
             $('#map_China').animate({ "opacity": "0.2" }, 1000);
             $(".plant, .plant_name").hide();
             $("#map_hn").show().animate({ top: 143, left: 510, width: 850, height: 925 }, {
@@ -347,6 +354,7 @@
             setTimeout("initInfo1();", 400);
         }
         function ShowSheng_zj() {
+            //$('#noTouch').show();
             $('#map_China').animate({ "opacity": "0.2" }, 1000);
             $(".plant, .plant_name").hide();
             $("#map_zj").show().animate({ top: 143, left: 510, width: 850, height: 925 }, {
@@ -421,7 +429,7 @@
                     //window.parent.Page2to3(stationId);
                     completeGroupPage(stationId);
                 });
-            $("#plant_1_rain,#plant_2_rain,#plant_3_rain,#plant_4_rain,#plant_5_rain,#plant_6_rain,#plant_7_rain,#plant_8_rain,#plant_9_rain,#plant_10_rain,#plant_11_rain,#plant_12_rain,#plant_13_rain,#plant_14_rain").css("top", "-44px");
+            $("#plant_1_rain,#plant_2_rain,#plant_3_rain,#plant_4_rain,#plant_5_rain,#plant_6_rain,#plant_7_rain,#plant_8_rain,#plant_9_rain,#plant_10_rain,#plant_11_rain,#plant_12_rain,#plant_13_rain,#plant_14_rain,#plant_15_rain,#plant_16_rain").css("top", "-44px");
             $("#nmg_plant1,#nmg_plant2,#nmg_plant3,#nmg_plant4,#nmg_plant5,#nmg_plant6,#nmg_plant7,#nmg_plant8,#nmg_plant9,#nmg_plant10").mouseover(function () {
                 var top = $(this).offset().top - 44;
                 var left = $(this).offset().left - 44;
@@ -777,6 +785,7 @@
         }
         ///大地图时，电站雨滴下落显示
         function initStationToMap() {
+            $('#noTouch').show();
             $('#plant_1_rain').show().animate({ top: 539 }, {
                 duration: 500, easing: 'easeInExpo', complete: function () {
                     $("#plant_1_light").show().animate({ top: 535, left: 971, opacity: 'hide', width: 47, height: 70 }, 500);
@@ -918,6 +927,32 @@
                     }
                 });
             }, 1000);
+            setTimeout(function () {
+                $('#plant_15_rain').show().animate({ top: 615 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_15_light").show().animate({ top: 720, left: 1160, opacity: 'hide', width: 38, height: 56 }, {
+                            duration: 500, easing: 'easeInExpo', complete: function () {
+                                bindOperate();
+                            }
+                        });
+                        $('#plant_15').show();
+                        $('#plant_15_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 1200);
+            setTimeout(function () {
+                $('#plant_16_rain').show().animate({ top: 725 }, {
+                    duration: 500, easing: 'easeInExpo', complete: function () {
+                        $("#plant_16_light").show().animate({ top: 740, left: 1130, opacity: 'hide', width: 38, height: 56 }, {
+                            duration: 500, easing: 'easeInExpo', complete: function () {
+                                bindOperate();
+                            }
+                        });
+                        $('#plant_16').show();
+                        $('#plant_16_rain').hide().css({ top: -42 });
+                    }
+                });
+            }, 1300);
             setTimeout(function () { $("#plant_1_name").animate({ left: 976, opacity: 'show' }, 200); }, 1400);
             setTimeout(function () { $("#plant_2_name").animate({ right: 915, opacity: 'show' }, 200); }, 1500);
             setTimeout(function () { $("#plant_3_name").animate({ right: 900, opacity: 'show' }, 200); }, 1600);
@@ -932,6 +967,11 @@
             setTimeout(function () { $("#plant_12_name").animate({ left: 1143, opacity: 'show' }, 200); }, 2500);
             setTimeout(function () { $("#plant_13_name").animate({ left: 1025, opacity: 'show' }, 200); }, 2600);
             setTimeout(function () { $("#plant_14_name").animate({ left: 1074, opacity: 'show' }, 200); }, 2700);
+            setTimeout(function () { $("#plant_15_name").animate({ left: 1160, opacity: 'show' }, 200); }, 2700); // name-left + 100
+            setTimeout(function () { $("#plant_16_name").animate({ left: 1175, opacity: 'show' }, 200); }, 2700);
+
+
+            setTimeout(function () { $('#noTouch').hide(); }, 2800);
 
         }
         /*Begin:内蒙古地图放大时，显示电站效果*/
@@ -997,7 +1037,7 @@
             showNmgStaion1();
         }
         function showStation2() {
-            $("#station_2").animate({ left: -20, opacity: 1 }, { duration: 220, easing: '', complete: function () { } });
+            $("#station_2").animate({ left: -20, opacity: 1 }, { duration: 220, easing: '', complete: function () { $('#noTouch').hide();} });
             showNmgStaion2();
         }
         function showStation3() {
@@ -1323,12 +1363,18 @@
             // 山东站 plant_11
             $("#plant_11, #plant_sd").on("click", function () {
                 fromMaptoCity("11");
-
             });
             // 海南站 plant_13
             $("#plant_13, #plant_hain").on("click", function () {
                 fromMaptoCity("13");
-
+            });
+            // 扬州站 plant_15
+            $("#plant_15, #plant_yz").on("click", function () {
+                fromMaptoCity("15");
+            });
+            // 镇江站 plant_16
+            $("#plant_16, #plant_zz").on("click", function () {
+                fromMaptoCity("16");
             });
         });
 
@@ -1498,10 +1544,9 @@
         <div id="plant_11_light" class="plant_group" style="top:787px;left:1195px;display:none;"></div>
         <div id="plant_11" class="plant plant_group" style="top:787px;left:1195px;display:none;"></div>
         <div id="plant_11_rain" class="plant_group_rain" style="left:1197px;"></div>
+
         <div id="plant_12_light" class="plant_group" style="top:570px;left:1130px;display:none;"></div>
-        <!--mark-->
         <div id="plant_12" class="plant plant_group" style="top:570px;left:1130px;display:none;"></div>
-        <!--mark-->
         <div id="plant_12_rain" class="plant_group_rain" style="left:1132px;"></div>
 
         <div id="plant_13_light" class="plant_group" style="top:990px;left:1015px;display:none;"></div>
@@ -1512,14 +1557,40 @@
         <div id="plant_14" class="plant plant_group" style="top:572px;left:1074px;display:none;"></div>
         <div id="plant_14_rain" class="plant_group_rain" style="left:1076px;"></div>
 
-        <div id="plant_1_name" class="plant_name plant_group_name_tl" style="top:600px;left:1076px;"><div class="plant_group_name_text">润博光伏电站<br>容量:33MW</div></div>
-        <div id="plant_2_name" class="plant_name plant_group_name_tr" style="top:568px;right:1015px;"><div class="plant_group_name_text" style="margin-left:10px;">巴拉贡光伏电站<br>容量:10MW</div></div>
-        <div id="plant_3_name" class="plant_name plant_group_name_br" style="top:494px;right:1000px;"><div class="plant_group_name_text" style="margin-left:10px;">乌拉特光伏电站<br>容量:20MW</div></div>
-        <div id="plant_4_name" class="plant_name plant_group_name_tr" style="top:546px;right:745px;width:100px;"><div class="plant_group_name_text" style="margin-left:10px;">巴音光伏电站<br>容量:35MW</div></div>
-        <div id="plant_5_name" class="plant_name plant_group_name_br" style="top:472px;right:935px;"><div class="plant_group_name_text" style="margin-left:10px;">九十九泉光伏电站<br>容量:20MW</div></div>
-        <div id="plant_6_name" class="plant_name plant_group_name_bl" style="top:456px;left:1153px;"><div class="plant_group_name_text" style="margin-left:15px;">红牧光伏电站<br>容量:30MW</div></div>
-        <div id="plant_7_name" class="plant_name plant_group_name_bl" style="top:393px;left:1211px;"><div class="plant_group_name_text" style="margin-left:15px;">胜利光伏电站<br>容量:20MW</div></div>
-        <div id="plant_8_name" class="plant_name plant_group_name" style="top:494px;left:1222px;"><div class="plant_group_name_bl_2"></div><div class="plant_group_name_r" style="width:110px;"></div><div class="plant_group_name_text_2" style="width:120px;left:15px;">北汽先进分布式电站<br>容量:7.2MW</div></div>
+        <div id="plant_15_light" class="plant_group" style="top:720px;left:1160px;display:none;"></div>
+        <div id="plant_15" class="plant plant_group" style="top:720px;left:1160px;display:none;"></div>
+        <div id="plant_15_rain" class="plant_group_rain" style="left:1162px;"></div>
+
+        <div id="plant_16_light" class="plant_group" style="top:740px;left:1163px;display:none;"></div>
+        <div id="plant_16" class="plant plant_group" style="top:740px;left:1163px;display:none;"></div>
+        <div id="plant_16_rain" class="plant_group_rain" style="left:1165px;"></div>
+
+        <div id="plant_1_name" class="plant_name plant_group_name_tl" style="top:600px;left:1076px;">
+            <div class="plant_group_name_text">润博光伏电站<br>容量:33MW</div>
+        </div>
+        <div id="plant_2_name" class="plant_name plant_group_name_tr" style="top:568px;right:1015px;">
+            <div class="plant_group_name_text" style="margin-left:10px;">巴拉贡光伏电站<br>容量:10MW</div>
+        </div>
+        <div id="plant_3_name" class="plant_name plant_group_name_br" style="top:494px;right:1000px;">
+            <div class="plant_group_name_text" style="margin-left:10px;">乌拉特光伏电站<br>容量:20MW</div>
+        </div>
+        <div id="plant_4_name" class="plant_name plant_group_name_tr" style="top:546px;right:745px;width:100px;">
+            <div class="plant_group_name_text" style="margin-left:10px;">巴音光伏电站<br>容量:35MW</div>
+        </div>
+        <div id="plant_5_name" class="plant_name plant_group_name_br" style="top:472px;right:935px;">
+            <div class="plant_group_name_text" style="margin-left:10px;">九十九泉光伏电站<br>容量:20MW</div>
+        </div>
+        <div id="plant_6_name" class="plant_name plant_group_name_bl" style="top:456px;left:1153px;">
+            <div class="plant_group_name_text" style="margin-left:15px;">红牧光伏电站<br>容量:30MW</div>
+        </div>
+        <div id="plant_7_name" class="plant_name plant_group_name_bl" style="top:393px;left:1211px;">
+            <div class="plant_group_name_text" style="margin-left:15px;">胜利光伏电站<br>容量:20MW</div>
+        </div>
+        <div id="plant_8_name" class="plant_name plant_group_name" style="top:494px;left:1222px;">
+            <div class="plant_group_name_bl_2"></div>
+            <div class="plant_group_name_r" style="width:110px;"></div>
+            <div class="plant_group_name_text_2" style="width:120px;left:15px;">北汽先进分布式电站<br>容量:7.2MW</div>
+        </div>
         
         <div id="plant_9_name" class="plant_name plant_group_name" style="top:684px;right:952px;">
             <div class="plant_group_name_tr_2"></div>
@@ -1538,18 +1609,39 @@
             <div id = "plant_sd" class="plant_group_name_text_2" style="width:120px;left:15px;">孔府电站<br>容量:5.8MW</div>
         </div>
         
-        <!--mark-->
         <div id="plant_12_name" class="plant_name plant_group_name" style="top:582px;left:1043px;">
             <div class="plant_group_name_tl_2"></div>
             <div class="plant_group_name_r" style="width:140px;"></div>
             <div id = "plant_tj" class="plant_group_name_text_2" style="width:150px;left:15px;">天津中际分布式电站<br>容量:8MW</div>
         </div>
-        <!--mark-->
+
         <div id="plant_13_name" class="plant_name plant_group_name" style="top:942px;left:925px;">
             <div class="plant_group_name_bl_2"></div><div class="plant_group_name_r" style="width:140px;"></div>
             <div id = "plant_hain" class="plant_group_name_text_2" style="width:150px;left:15px;">海南澄迈大拉分布式电站<br>容量:1MW</div>
         </div>
-        <div id="plant_14_name" class="plant_name plant_group_name" style="top:586px;left:974px;"><div class="plant_group_name_tl_2"></div><div class="plant_group_name_r" style="width:90px;"></div><div class="plant_group_name_text_2" style="width:100px;left:15px;">阜平麻棚光伏电站<br>容量:30MW</div></div>
+        <div id="plant_14_name" class="plant_name plant_group_name" style="top:586px;left:974px;">
+            <div class="plant_group_name_tl_2"></div>
+            <div class="plant_group_name_r" style="width:90px;"></div>
+            <div class="plant_group_name_text_2" style="width:100px;left:15px;">阜平麻棚光伏电站<br>容量:30MW</div>
+        </div>
+        <div id="plant_15_name" class="plant_name plant_group_name" style="top:730px;left:1160px;">
+            <div class="plant_group_name_tr_2"></div>
+            <div class="plant_group_name_l" style="width:110px;"></div>
+            <div id = "plant_yz" class="plant_group_name_text_2" style="width:120px;right:8px;">扬州太极分布式电站<br>容量:7.2MW</div>
+        </div>
+
+        <div id="plant_16_name" class="plant_name plant_group_name" style="top:740px;left:1130px;">
+            <div class="plant_group_name_tl_2"></div>
+            <div class="plant_group_name_r" style="width:140px;"></div>
+            <div id = "plant_zz" class="plant_group_name_text_2" style="width:150px;left:15px;">镇江二重分布式电站<br>容量:6MW</div>
+        </div>
+
+                <!-- <div id="plant_15_name" class="plant_name plant_group_name" style="top:730px;left:1160px;">
+            <div class="plant_group_name_tl_2"></div>
+            <div class="plant_group_name_l" style="width:140px;"></div>
+            <div id = "plant_yz" class="plant_group_name_text_2" style="width:150px;left:15px;"></div>
+        </div> -->
+
         <div id="nmg_plant1_light" class="plant_group" style="display:none;top:885px;left:805px;"></div>
         <div id="nmg_plant1" class="plant_group" style="display:none;top:885px;left:805px;"></div>
 
@@ -1580,6 +1672,7 @@
         <div id="nmg_plant10_light" class="plant_group" style="display:none;top:521px;left:1130px;"></div>
         <div id="nmg_plant10" class="plant_group" style="display:none;top:521px;left:1130px;"></div>
         <!--<div id="plant_cursor"></div>-->
+        <div id="noTouch"></div>
     </div>
 </body>
 </html>
